@@ -60,7 +60,10 @@ void MainWindow::startScenario()
         QFile *file = new QFile(name);
         QServerThread *thread = new QServerThread(this);
         connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-        thread->start();
+        connect(thread, SIGNAL(update(QString)), this, SLOT(updateLogs(QString)));
+        //connect(this, SIGNAL(exit()), thread, SLOT(quit()));
+        //thread->start();
+        thread->StartThread(file);
     }
     //commands = xml.ReadFile(file);
     //int size = commands->size();
@@ -75,10 +78,10 @@ void MainWindow::startScenario()
     else
         wnd->ClearLogs();*/
 
-    LogWindow& log = LogWindow::Instance(this);
-    log.ClearLogs();
-    log.show();
-    log.update(QString("inMainWindow"));
+    //LogWindow& log = LogWindow::Instance(this);
+    //log.ClearLogs();
+    //log.show();
+    //log.update(QString("inMainWindow"));
 
 
     //run();
@@ -121,9 +124,18 @@ void MainWindow::startScenario()
 }
 void MainWindow::stopScenario()
 {
+    //emit exit();
     ui->pushButton->setEnabled(true);
-    LogWindow& log = LogWindow::Instance(this);
-    log.ClearLogs();
+    //LogWindow& log = LogWindow::Instance(this);
+    ClearLogs();
     //thread->quit();
     //delete thread;
+}
+void MainWindow::updateLogs(QString Message)
+{
+    ui->textBrowser->setText(ui->textBrowser->toPlainText() + "\n" + Message);
+}
+void MainWindow::ClearLogs()
+{
+    ui->textBrowser->clear();
 }

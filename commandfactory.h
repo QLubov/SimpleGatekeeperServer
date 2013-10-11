@@ -6,7 +6,8 @@
 #include <grqcommand.h>
 #include <gcfcommand.h>
 #include <grjcommand.h>
-
+#include <rrqcommand.h>
+#include <rcfcommand.h>
 class CommandFactory
 {
 public:

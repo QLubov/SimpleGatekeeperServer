@@ -16,7 +16,7 @@ private:
     static LogManager *instance;
     QList<QString> logs;
 signals:
-    void updateLogs(QString&);
+    void updateLogs(QString);
 };
 
 #endif // LOGMANAGER_H

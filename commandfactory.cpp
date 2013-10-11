@@ -26,6 +26,16 @@ Command* CommandFactory::CreateCommand(std::string type)
         command = new GRJCommand(2);
         return command;
     }
+    if(!std::strcmp(type.c_str(), "RRQ"))
+    {
+        command = new RRQCommand(3);
+        return command;
+    }
+    if(!std::strcmp(type.c_str(), "RCF"))
+    {
+        command = new RCFCommand(4);
+        return command;
+    }
     return NULL;
 
 

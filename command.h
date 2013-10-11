@@ -14,7 +14,7 @@ class Command
 public:
     Command(int state);
     virtual ~Command();
-    virtual H323GatekeeperRequest::Response execute(H323GatekeeperListener *, H323GatekeeperRequest &) = 0;
+    virtual H323GatekeeperRequest::Response execute(H323GatekeeperListener *, H323GatekeeperGRQ &) = 0;
     //virtual PString GetName() = 0;
     virtual bool ValidateState(int state);
 

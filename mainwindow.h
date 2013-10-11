@@ -9,7 +9,7 @@
 //#include "endpoint.h"
 //#include <h323.h>
 //#include "gatekeeperserver.h"
-#include <logwindow.h>
+//#include <logwindow.h>
 //#include <xmlreader.h>
 //#include "actionmanager.h"
 #include "qserverthread.h"
@@ -28,12 +28,16 @@ public:
     ~MainWindow();
     
 private:
+    void ClearLogs();
     Ui::MainWindow *ui;
     XMLReader xml;
     std::queue<Command*>* commands;        
 private slots:
     void startScenario();
     void stopScenario();
+    void updateLogs(QString);
+signals:
+    void exit();
 };
 
 #endif // MAINWINDOW_H

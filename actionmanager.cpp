@@ -33,7 +33,7 @@ PBoolean ActionManager::CheckState(int state)
     return c->ValidateState(state);
 }
 
-H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperListener *listener, H323GatekeeperRequest &info)
+H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperListener *listener, H323GatekeeperGRQ &info)
 {
     Command *c = commands->front();
     commands->pop();
@@ -41,6 +41,8 @@ H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperList
     //LogWindow& log = LogWindow::Instance();
     //log.show();
     //log.update(QString("hohoi"));
+    LogManager &log = LogManager::Instance();
+    log.PushLog(QString("execute command"));
     return c->execute(listener, info);
 }
 int ActionManager::CountOfCommand()

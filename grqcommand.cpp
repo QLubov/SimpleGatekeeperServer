@@ -1,6 +1,6 @@
 #include "grqcommand.h"
 
-H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *listener, H323GatekeeperRequest &info)
+H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *listener, H323GatekeeperGRQ &info)
 {
     std::cout<<" GRQCommand"<<std::endl;
 
@@ -11,12 +11,14 @@ H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *list
     else
     {
         std::cout<<" Err in GRQCommand!"<<std::endl;
+        LogManager &log = LogManager::Instance();
+        log.PushLog(QString("Err in GRQCommand!"));
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString(QString("Err in GRQCommand!")));
     }
 
 
-    return H323GatekeeperRequest::Confirm;
+    return H323GatekeeperRequest::Confirm;//exit
 
 }
 

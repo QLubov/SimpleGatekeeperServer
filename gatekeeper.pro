@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     endpoint.cpp \
     grjcommand.cpp \
     qserverthread.cpp \
-    logmanager.cpp
+    logmanager.cpp \
+    rrqcommand.cpp \
+    rcfcommand.cpp
 
 HEADERS  += mainwindow.h \
     logwindow.h \
@@ -41,7 +43,9 @@ HEADERS  += mainwindow.h \
     endpoint.h \
     grjcommand.h \
     qserverthread.h \
-    logmanager.h
+    logmanager.h \
+    rrqcommand.h \
+    rcfcommand.h
 
 FORMS    += mainwindow.ui \
     logwindow.ui

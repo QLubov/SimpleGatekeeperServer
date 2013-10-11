@@ -2,7 +2,9 @@
 
 void makeServer()
 {
-    H323EndPoint ep;
+    LogManager &log = LogManager::Instance();
+    log.PushLog(QString("in makeserver!"));
+    /*H323EndPoint ep;
     H323GatekeeperServer *serv = new H323GatekeeperServer(ep);
     serv->SetGatekeeperIdentifier("LubaSERVER");
     PString iface, listenPort;
@@ -18,9 +20,9 @@ void makeServer()
     H323GatekeeperListener *tr = new H323GatekeeperListener(ep, *serv, serv->GetGatekeeperIdentifier(), transport);
 
     if(serv->AddListener(tr))
-        std::cout<<"Listener "<<tr->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    //EndPoint ep;
-    //GatekeeperServer *gk = new GatekeeperServer(ep);
+        std::cout<<"Listener "<<tr->GetInterfaceAddresses()<<" was added!"<<std::endl;*/
+    EndPoint ep;
+    GatekeeperServer *gk = new GatekeeperServer(ep);
     for (;;)
         {
            /* PCaselessString cmd;
@@ -37,5 +39,18 @@ QServerThread::QServerThread(QObject *parent) :
 
 void QServerThread::run()
 {
+    LogManager &log = LogManager::Instance();
+    log.PushLog(QString("in run!"));
     makeServer();
+}
+void QServerThread::StartThread(QFile *file)
+{
+    ActionManager &mng = ActionManager::Instance();
+    mng.ParseXML(file);
+
+    LogManager &log = LogManager::Instance();
+    connect(&log, SIGNAL(updateLogs(QString)), this, SIGNAL(update(QString)));
+    log.PushLog(QString("in StartThread!"));
+
+    this->start();
 }

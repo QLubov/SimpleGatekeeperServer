@@ -6,14 +6,14 @@
 #include "xmlreader.h"
 #include <ptlib.h>
 //#include "logwindow.h"
-
+#include "logmanager.h"
 class ActionManager
 {
 public:
     ~ActionManager();
     static ActionManager& Instance();
     PBoolean CheckState(int state);
-    H323GatekeeperRequest::Response ExecuteCommand(H323GatekeeperListener*, H323GatekeeperRequest&);
+    H323GatekeeperRequest::Response ExecuteCommand(H323GatekeeperListener*, H323GatekeeperGRQ&);
     void ParseXML(QFile*);
     enum States {GRQ = 0, GCF = 1, GRJ = 2, RRQ = 3, RCF = 4, RRJ = 5};
     int CountOfCommand();
