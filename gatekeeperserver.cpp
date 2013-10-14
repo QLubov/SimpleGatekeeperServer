@@ -22,7 +22,7 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     //endpoint.SetCapability(0, 0, new H323_G711Capability(H323_G711Capability::muLaw));
     //endpoint.SetCapability(0, 0, new H323_G711Capability(H323_G711Capability::ALaw));
     endpoint.SetLocalUserName("Luba");
-    endpoint.LoadBaseFeatureSet();
+    //endpoint.LoadBaseFeatureSet();
     //endpoint.SetQ931Display(true);
 
     //H323TransportAddress addr1("#ip$192.168.135.49:1719#");

@@ -28,6 +28,6 @@ H323GatekeeperRequest::Response RRQCommand::execute(H323GatekeeperListener *list
     }
 
 
-    return H323GatekeeperRequest::Confirm;//exit
+    //return H323GatekeeperRequest::Confirm;//exit
 
 }

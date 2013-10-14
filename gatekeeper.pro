@@ -29,7 +29,10 @@ SOURCES += main.cpp\
     logmanager.cpp \
     rrqcommand.cpp \
     rcfcommand.cpp \
-    rrjcommand.cpp
+    rrjcommand.cpp \
+    urqcommand.cpp \
+    ucfcommand.cpp \
+    urjcommand.cpp
 
 HEADERS  += mainwindow.h \
     logwindow.h \
@@ -48,7 +51,10 @@ HEADERS  += mainwindow.h \
     rrqcommand.h \
     rcfcommand.h \
     rrjcommand.h \
-    enumOfStates.h
+    enumOfStates.h \
+    urqcommand.h \
+    ucfcommand.h \
+    urjcommand.h
 
 FORMS    += mainwindow.ui \
     logwindow.ui

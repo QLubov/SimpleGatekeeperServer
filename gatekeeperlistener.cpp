@@ -57,6 +57,36 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
 
 }
 
+ H323GatekeeperRequest::Response GatekeeperListener::OnUnregistration(H323GatekeeperURQ & info)
+  {
+    PTRACE_BLOCK("H323GatekeeperListener::OnUnregistration");
+
+   // if (info.urq.HasOptionalField(H225_UnregistrationRequest::e_endpointIdentifier))
+   //   info.endpoint = gatekeeper.FindEndPointByIdentifier(info.urq.m_endpointIdentifier);
+   // else
+
+    std::cout<<"H323GatekeeperListener::OnUnregistration"<<std::endl;
+
+    ActionManager &mng = ActionManager::Instance();
+    if(mng.CheckState(URQ))
+        return mng.ExecuteCommand(this, &info);
+    else
+    {
+        std::cout<<"Err in onUnregistration!"<<std::endl;
+
+        //LogWindow & log = LogWindow::Instance();
+        //log.update(QString("Err in onDiscovery!"));
+    }
+      info.endpoint = gatekeeper.FindEndPointBySignalAddresses(info.urq.m_callSignalAddress);
+
+    if (info.endpoint == NULL) {
+      info.SetRejectReason(H225_UnregRejectReason::e_notCurrentlyRegistered);
+      PTRACE(2, "RAS\tURQ rejected, not registered");
+      return H323GatekeeperRequest::Reject;
+    }
+
+    return gatekeeper.OnUnregistration(info);
+  }
  /*bool GatekeeperListener::HandleTransaction(const PASN_Object & rawPDU)
  {
    const H323RasPDU & pdu = (const H323RasPDU &)rawPDU;

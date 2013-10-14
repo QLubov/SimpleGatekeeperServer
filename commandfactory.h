@@ -10,6 +10,9 @@
 #include <rrqcommand.h>
 #include <rcfcommand.h>
 #include <rrjcommand.h>
+#include <urqcommand.h>
+#include <ucfcommand.h>
+#include <urjcommand.h>
 class CommandFactory
 {
 public:

@@ -13,32 +13,47 @@ Command* CommandFactory::CreateCommand(std::string &type)
     Command *command;
     if(!std::strcmp(type.c_str(), "GRQ"))
     {
-        command = new GRQCommand(0);
+        command = new GRQCommand(GRQ);
         return command;
     }
     if(!std::strcmp(type.c_str(), "GCF"))
     {
-        command = new GCFCommand(1);
+        command = new GCFCommand(GCF);
         return command;
     }
     if(!std::strcmp(type.c_str(), "GRJ"))
     {
-        command = new GRJCommand(2);
+        command = new GRJCommand(GRJ);
         return command;
     }
     if(!std::strcmp(type.c_str(), "RRQ"))
     {
-        command = new RRQCommand(3);
+        command = new RRQCommand(RRQ);
         return command;
     }
     if(!std::strcmp(type.c_str(), "RCF"))
     {
-        command = new RCFCommand(4);
+        command = new RCFCommand(RCF);
         return command;
     }
     if(!std::strcmp(type.c_str(), "RRJ"))
     {
-        command = new RRJCommand(5);
+        command = new RRJCommand(RRJ);
+        return command;
+    }
+    if(!std::strcmp(type.c_str(), "URQ"))
+    {
+        command = new URQCommand(URQ);
+        return command;
+    }
+    if(!std::strcmp(type.c_str(), "UCF"))
+    {
+        command = new UCFCommand(UCF);
+        return command;
+    }
+    if(!std::strcmp(type.c_str(), "URJ"))
+    {
+        command = new URJCommand(URJ);
         return command;
     }
     return NULL;
