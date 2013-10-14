@@ -1,18 +1,19 @@
 #include "grqcommand.h"
 
-H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *listener, H323GatekeeperGRQ &info)
+H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *listener, /*H323GatekeeperGRQ &info)//*/H323GatekeeperRequest *grqInfo)
 {
     std::cout<<" GRQCommand"<<std::endl;
 
     ActionManager &mng = ActionManager::Instance();
 
-    if(mng.CheckState(2) || mng.CheckState(1))
-        return mng.ExecuteCommand(listener, info);
+    if(mng.CheckState(GCF) || mng.CheckState(GRJ))
+        return mng.ExecuteCommand(listener, grqInfo);
     else
     {
         std::cout<<" Err in GRQCommand!"<<std::endl;
         LogManager &log = LogManager::Instance();
         log.PushLog(QString("Err in GRQCommand!"));
+        //stop gatekeeperserver
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString(QString("Err in GRQCommand!")));
     }

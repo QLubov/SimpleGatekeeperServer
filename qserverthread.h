@@ -9,18 +9,22 @@
 #include "actionmanager.h"
 #include "logmanager.h"
 
-void makeServer();
+//void makeServer();
 
 class QServerThread : public QThread
 {
     Q_OBJECT
-void run();// Q_DECL_OVERRIDE;
+    void run();// Q_DECL_OVERRIDE;
+    bool flag;
+    GatekeeperServer *server;
 public:
     explicit QServerThread(QObject *parent = 0);
     void StartThread(QFile*);
     
 signals:
     void update(QString);
+public slots:
+    void end();
 
 };
 

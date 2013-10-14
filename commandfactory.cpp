@@ -8,7 +8,7 @@ GRQCommand* CommandFactory::CreateGRQCommand()
 {
     return new GRQCommand;
 }*/
-Command* CommandFactory::CreateCommand(std::string type)
+Command* CommandFactory::CreateCommand(std::string &type)
 {
     Command *command;
     if(!std::strcmp(type.c_str(), "GRQ"))
@@ -34,6 +34,11 @@ Command* CommandFactory::CreateCommand(std::string type)
     if(!std::strcmp(type.c_str(), "RCF"))
     {
         command = new RCFCommand(4);
+        return command;
+    }
+    if(!std::strcmp(type.c_str(), "RRJ"))
+    {
+        command = new RRJCommand(5);
         return command;
     }
     return NULL;

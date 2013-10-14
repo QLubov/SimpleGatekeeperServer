@@ -14,12 +14,15 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
 
 
     ActionManager &mng = ActionManager::Instance();
-    if(mng.CheckState(0))
-        return mng.ExecuteCommand(this, info);
+    if(mng.CheckState(GRQ))
+        return mng.ExecuteCommand(this, &info);
     else
     {
         std::cout<<"Err in onDiscovery!"<<std::endl;
 
+        LogManager &log = LogManager::Instance();
+        log.PushLog(QString("Err in onDiscovery"));
+        //mng.error();
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString("Err in onDiscovery!"));
     }
@@ -36,49 +39,23 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
     return false;
 }*/
 
-/* H323GatekeeperRequest::Response GatekeeperListener::OnRegistration(H323GatekeeperRRQ & info)
+ H323GatekeeperRequest::Response GatekeeperListener::OnRegistration(H323GatekeeperRRQ & info)
  {
    PTRACE_BLOCK("H323GatekeeperListener::OnRegistration");
     std::cout<<"H323GatekeeperListener::OnRegistration"<<std::endl;
 
-   if (info.rrq.HasOptionalField(H225_RegistrationRequest::e_endpointIdentifier))
-     info.endpoint = gatekeeper.FindEndPointByIdentifier(info.rrq.m_endpointIdentifier);
+    ActionManager &mng = ActionManager::Instance();
+    if(mng.CheckState(RRQ))
+        return mng.ExecuteCommand(this, &info);
+    else
+    {
+        std::cout<<"Err in onRegistration!"<<std::endl;
 
-   if (!info.CheckGatekeeperIdentifier())
-   {
-       std::cout<<"H323GatekeeperListener::OnRegistration reject!"<<std::endl;
-     return H323GatekeeperRequest::Reject;
-   }
+        //LogWindow & log = LogWindow::Instance();
+        //log.update(QString("Err in onDiscovery!"));
+    }
 
-   if (info.rrq.m_protocolIdentifier.GetSize() != 6 || info.rrq.m_protocolIdentifier[5] < 2) {
-     info.SetRejectReason(H225_RegistrationRejectReason::e_invalidRevision);
-     PTRACE(2, "RAS\tRRQ rejected, version 1 not supported");
-     std::cout<<"H323GatekeeperListener::OnRegistration reject!"<<std::endl;
-     return H323GatekeeperRequest::Reject;
-   }
-
-   H323GatekeeperRequest::Response response = gatekeeper.OnRegistration(info);
-   if (response != H323GatekeeperRequest::Confirm)
-   {
-       std::cout<<"H323GatekeeperListener::OnRegistration response!"<<std::endl;
-     return response;
-   }
-
-   // Adjust the authenticator remote ID to endpoint ID
-   if (!info.rrq.m_keepAlive) {
-     PSafePtr<H323RegisteredEndPoint> lock(info.endpoint, PSafeReadWrite);
-     H235Authenticators authenticators = info.endpoint->GetAuthenticators();
-     for (PINDEX i = 0; i < authenticators.GetSize(); i++) {
-       H235Authenticator & authenticator = authenticators[i];
-       if (authenticator.UseGkAndEpIdentifiers()) {
-         authenticator.SetRemoteId(info.endpoint->GetIdentifier());
-         authenticator.SetLocalId(gatekeeperIdentifier);
-       }
-     }
-   }
- std::cout<<"H323GatekeeperListener::OnRegistration confirm!"<<std::endl;
-   return H323GatekeeperRequest::Confirm;
- }*/
+}
 
  /*bool GatekeeperListener::HandleTransaction(const PASN_Object & rawPDU)
  {

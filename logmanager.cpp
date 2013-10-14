@@ -18,3 +18,7 @@ void LogManager::PushLog(QString &log)
 LogManager::LogManager()
 {
 }
+void LogManager::clearLogs()
+{
+    logs.clear();
+}

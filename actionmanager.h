@@ -7,15 +7,16 @@
 #include <ptlib.h>
 //#include "logwindow.h"
 #include "logmanager.h"
-class ActionManager
+#include <enumOfStates.h>
+class ActionManager// : public QObject
 {
 public:
     ~ActionManager();
     static ActionManager& Instance();
     PBoolean CheckState(int state);
-    H323GatekeeperRequest::Response ExecuteCommand(H323GatekeeperListener*, H323GatekeeperGRQ&);
+    H323GatekeeperRequest::Response ExecuteCommand(H323GatekeeperListener*, /*H323GatekeeperGRQ&);//*/H323GatekeeperRequest*);
     void ParseXML(QFile*);
-    enum States {GRQ = 0, GCF = 1, GRJ = 2, RRQ = 3, RCF = 4, RRJ = 5};
+    //enum States {};
     int CountOfCommand();
 private:
     ActionManager();
@@ -24,7 +25,8 @@ private:
     static ActionManager *instance;
 
     std::queue<Command*>* commands;
-
+/*signals:
+    void error();*/
 };
 
 #endif // ACTIONMANAGER_H

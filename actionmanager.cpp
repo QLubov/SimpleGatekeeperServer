@@ -29,11 +29,15 @@ ActionManager& ActionManager::Instance()
 
 PBoolean ActionManager::CheckState(int state)
 {
-    Command *c = commands->front();
-    return c->ValidateState(state);
+    if (!commands->empty())
+    {
+        Command *c = commands->front();
+        return c->ValidateState(state);
+    }
+    return false;
 }
 
-H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperListener *listener, H323GatekeeperGRQ &info)
+H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperListener *listener,/* H323GatekeeperGRQ &info)//*/H323GatekeeperRequest  *info)
 {
     Command *c = commands->front();
     commands->pop();
@@ -42,7 +46,7 @@ H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperList
     //log.show();
     //log.update(QString("hohoi"));
     LogManager &log = LogManager::Instance();
-    log.PushLog(QString("execute command"));
+    log.PushLog(QString("execute command " + c->GetName()));
     return c->execute(listener, info);
 }
 int ActionManager::CountOfCommand()

@@ -13,8 +13,8 @@ class GCFCommand : public Command
 public:
     GCFCommand(int state);// : Command(state){}
     ~GCFCommand();
-    H323GatekeeperRequest::Response execute(H323GatekeeperListener *listener, H323GatekeeperGRQ &info);
-    //PString GetName();//{return "GCF";}//РїРѕ СЃСЃС‹Р»РєРµ!
+    H323GatekeeperRequest::Response execute(H323GatekeeperListener *listener, /*H323GatekeeperGRQ &info);//*/H323GatekeeperRequest *grqInfo);//тут нужен грку
+    QString GetName(){return QString("  -->  GCF");}//РїРѕ СЃСЃС‹Р»РєРµ!
 };
 
 #endif // GCFCOMMAND_H

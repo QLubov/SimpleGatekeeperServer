@@ -52,8 +52,8 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     H323Transport *transport = new H323TransportUDP(endpoint, interfaceAddress, interfacePort, 1);
     H323Transport *transport1 = new H323TransportUDP(endpoint, interfaceAddress, interfacePort1, 1);
     //H323Transport *transport2 = new H323TransportUDP(endpoint, interfaceAddress, interfacePort2, 1);
-    //H323Transport *transport3 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort, 1);
-    //H323Transport *transport4 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort1, 1);
+    H323Transport *transport3 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort, 1);
+    H323Transport *transport4 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort1, 1);
     //H323Transport *transport5 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort2, 1);
 
     //H323Transport *transport6 = new H323TransportUDP(endpoint, interfaceAddress, interfacePort3, 1);
@@ -66,8 +66,8 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     H323GatekeeperListener *tr = new GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport);//new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport);
     H323GatekeeperListener *tr1 = new GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport1);//H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport1);
     //H323GatekeeperListener *tr2 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport2);
-    //H323GatekeeperListener *tr3 = new SimpleGatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport3);//new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport3);
-    //H323GatekeeperListener *tr4 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport4);
+    H323GatekeeperListener *tr3 = new GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport3);//new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport3);
+    H323GatekeeperListener *tr4 = new GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport4);
     //H323GatekeeperListener *tr5 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport5);
     //H323GatekeeperListener *tr6 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport6);
     //H323GatekeeperListener *tr7 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport7);
@@ -89,14 +89,14 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     {
         std::cout<<"Listener "<<tr2->GetInterfaceAddresses()<<" was added!"<<std::endl;
     }*/
-    /*if(this->AddListener(tr3))
+    if(this->AddListener(tr3))
     {
         std::cout<<"Listener "<<tr3->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    }*/
-    /*if(this->AddListener(tr4))
+    }
+    if(this->AddListener(tr4))
     {
         std::cout<<"Listener "<<tr4->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    }*/
+    }
     /*if(this->AddListener(tr5))
     {
         std::cout<<"Listener "<<tr5->GetInterfaceAddresses()<<" was added!"<<std::endl;

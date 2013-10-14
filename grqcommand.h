@@ -15,8 +15,8 @@ class GRQCommand : public Command
 public:
     GRQCommand(int state);// : Command(state){}
     ~GRQCommand();//{}
-    H323GatekeeperRequest::Response execute(H323GatekeeperListener *listener, H323GatekeeperGRQ &info);
-    //PString GetName();//{return "GRQ";}
+    H323GatekeeperRequest::Response execute(H323GatekeeperListener *listener, /*H323GatekeeperGRQ &info);//*/H323GatekeeperRequest *grqInfo);
+    QString GetName(){return QString("  <--  GRQ");}
 
 };
 

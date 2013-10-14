@@ -9,6 +9,7 @@ public:
     static LogManager& Instance();
     void PushLog(QString&);
     ~LogManager(){}
+    void clearLogs();
 private:
     LogManager();
     LogManager (const LogManager&);

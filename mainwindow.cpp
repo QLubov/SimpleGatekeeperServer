@@ -53,6 +53,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::startScenario()
 {
+    ClearLogs();
     QString name = QFileDialog::getOpenFileName(this, "Choose file", "d:/", "XML-files (*.xml)");
     if(!name.isEmpty())
     {
@@ -61,7 +62,8 @@ void MainWindow::startScenario()
         QServerThread *thread = new QServerThread(this);
         connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
         connect(thread, SIGNAL(update(QString)), this, SLOT(updateLogs(QString)));
-        //connect(this, SIGNAL(exit()), thread, SLOT(quit()));
+        connect(this, SIGNAL(exit()), thread, SLOT(end()));
+        //connect(this, SIGNAL(exit()), thread, SLOT(deleteLater()));
         //thread->start();
         thread->StartThread(file);
     }
@@ -124,10 +126,10 @@ void MainWindow::startScenario()
 }
 void MainWindow::stopScenario()
 {
-    //emit exit();
+    emit exit();
     ui->pushButton->setEnabled(true);
     //LogWindow& log = LogWindow::Instance(this);
-    ClearLogs();
+    //ClearLogs();
     //thread->quit();
     //delete thread;
 }
