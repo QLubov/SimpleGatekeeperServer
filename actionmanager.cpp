@@ -17,6 +17,7 @@ void ActionManager::ParseXML(QFile * file)
     //log.update(QString("start parsing"));
     XMLReader xml;
     commands = xml.ReadFile(file);
+    //count = commands->size();
     //log.update(QString("end parsing"));
 }
 
@@ -46,11 +47,16 @@ H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperList
     //log.show();
     //log.update(QString("hohoi"));
     LogManager &log = LogManager::Instance();
-    log.PushLog(QString("execute command " + c->GetName()));
+    log.PushLog(/*QString("execute command " + */c->GetName()/*)*/);
     return c->execute(listener, info);
 }
-int ActionManager::CountOfCommand()
+int ActionManager::GetCountOfCommand()
 {
     return commands->size();
 }
 
+void ActionManager::deleteScenario()
+{
+    for(int i = 0; i < commands->size(); i++)
+        commands->pop();
+}

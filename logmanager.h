@@ -18,6 +18,7 @@ private:
     QList<QString> logs;
 signals:
     void updateLogs(QString);
+    void exit();
 };
 
 #endif // LOGMANAGER_H

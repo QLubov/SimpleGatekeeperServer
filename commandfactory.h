@@ -1,6 +1,7 @@
 #ifndef COMMANDFACTORY_H
 #define COMMANDFACTORY_H
 #pragma once
+//#include <QObject>
 //#include <command.h>
 //#include <string.h>
 #include "enumOfStates.h"

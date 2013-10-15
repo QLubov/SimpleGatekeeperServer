@@ -11,7 +11,7 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     //log.update(QString("Create a gatekeeper"));
 
     this->SetGatekeeperIdentifier("LubaServer", 1);
-    //this->SetTimeToLive(120);
+    this->SetTimeToLive(600);
     //this->SetAvailableBandwidth(32);
     //this->SetInfoResponseRate(10);
 
@@ -109,20 +109,14 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     {
         std::cout<<"Listener "<<tr7->GetInterfaceAddresses()<<" was added!"<<std::endl;
     }*/
-    /*for (;;)
-    {
-        PCaselessString cmd;
-        cin >> cmd;
-        if (cmd == "X")
-          break;
 
-    }*/
 }
 
 
 GatekeeperServer::~GatekeeperServer(void)
 {
 }
+
 /*H323GatekeeperRequest::Response GatekeeperServer::OnDiscovery(H323GatekeeperGRQ &info)
 {
     PTRACE_BLOCK("H323GatekeeperServer::OnDiscovery");
@@ -133,8 +127,8 @@ GatekeeperServer::~GatekeeperServer(void)
      for (PINDEX cap = 0; cap < info.grq.m_authenticationCapability.GetSize(); cap++) {
            for (PINDEX alg = 0; alg < info.grq.m_algorithmOIDs.GetSize(); alg++) {
                //для телефона закомментить иф
-            //if (authenticators[auth].IsCapability(info.grq.m_authenticationCapability[cap],
-            //                                      info.grq.m_algorithmOIDs[alg])) {
+            if (authenticators[auth].IsCapability(info.grq.m_authenticationCapability[cap],
+                                                  info.grq.m_algorithmOIDs[alg])) {
 
              PTRACE(3, "RAS\tGRQ accepted on " << H323TransportAddress(info.gcf.m_rasAddress)
                    << " using authenticator " << authenticators[auth]);
@@ -150,18 +144,19 @@ GatekeeperServer::~GatekeeperServer(void)
 
 
 
-              std::cout<<"0"<<std::endl;
-              // return H323GatekeeperRequest::Confirm;
-         //}
+              //std::cout<<"0"<<std::endl;
+               return H323GatekeeperRequest::Confirm;
+         }
        }
 
      }
    }
+     //info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e);
     //для телефона раскомментить
     //info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_authenticationMode);
     //info.gcf.m_authenticationMode = info.grq.m_authenticationCapability[0];
 
-    info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_tokens);
+    /*info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_tokens);
 
     info.gcf.m_tokens.SetSize(1);
     info.gcf.m_tokens[0].IncludeOptionalField(H235_ClearToken::e_generalID);
@@ -174,7 +169,7 @@ GatekeeperServer::~GatekeeperServer(void)
 
 
     //для телефона раскомментить
-    info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_featureSet);
+   /* info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_featureSet);
     info.gcf.m_featureSet.m_replacementFeatureSet = true;
     info.gcf.m_featureSet.IncludeOptionalField(H225_FeatureSet::e_desiredFeatures);
     info.gcf.m_featureSet.IncludeOptionalField(H225_FeatureSet::e_supportedFeatures);
@@ -182,7 +177,7 @@ GatekeeperServer::~GatekeeperServer(void)
 
     //для телефона раскомментить
 
-    info.gcf.m_featureSet.m_supportedFeatures.SetSize(2);
+    /*info.gcf.m_featureSet.m_supportedFeatures.SetSize(2);
 
     //info.gcf.m_featureSet.m_supportedFeatures[0].m_id = info.grq.m_featureSet.m_supportedFeatures[0].m_id;
     //info.gcf.m_featureSet.m_supportedFeatures[1].m_id = info.grq.m_featureSet.m_supportedFeatures[1].m_id;
@@ -235,11 +230,11 @@ GatekeeperServer::~GatekeeperServer(void)
     info.gcf.m_featureSet.m_desiredFeatures = info.grq.m_featureSet.m_supportedFeatures;
              */
 
-  /*  std::cout<<"return Confirm  "<<std::endl;
-    return H323GatekeeperRequest::Confirm;
-}
-*/
- /*H323GatekeeperRequest::Response GatekeeperServer::OnRegistration(H323GatekeeperRRQ & info)
+  /*  std::cout<<"return Confirm  "<<std::endl;*/
+   /* return H323GatekeeperRequest::Confirm;
+}*/
+
+ H323GatekeeperRequest::Response GatekeeperServer::OnRegistration(H323GatekeeperRRQ & info)
  {
    PTRACE_BLOCK("H323GatekeeperServer::OnRegistration");
    std::cout<<"onRegistration!"<<std::endl;
@@ -340,6 +335,7 @@ GatekeeperServer::~GatekeeperServer(void)
      }
    }
 
+    info.rcf.m_timeToLive = this->GetTimeToLive();
    // Are already registered and have just sent another heavy RRQ
    if (info.endpoint != NULL) {
      H323GatekeeperRequest::Response response = info.endpoint->OnRegistration(info);
@@ -380,7 +376,7 @@ GatekeeperServer::~GatekeeperServer(void)
    std::cout<<"Confirm"<<std::endl;
    return H323GatekeeperRequest::Confirm;
  }
-*/
+
 /*
   H323GatekeeperRequest::Response GatekeeperServer::OnAdmission(H323GatekeeperARQ & info)
  {

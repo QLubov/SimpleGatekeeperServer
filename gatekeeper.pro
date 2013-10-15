@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     rrjcommand.cpp \
     urqcommand.cpp \
     ucfcommand.cpp \
-    urjcommand.cpp
+    urjcommand.cpp \
+    killerthread.cpp
 
 HEADERS  += mainwindow.h \
     logwindow.h \
@@ -54,7 +55,8 @@ HEADERS  += mainwindow.h \
     enumOfStates.h \
     urqcommand.h \
     ucfcommand.h \
-    urjcommand.h
+    urjcommand.h \
+    killerthread.h
 
 FORMS    += mainwindow.ui \
     logwindow.ui

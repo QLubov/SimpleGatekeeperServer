@@ -11,6 +11,9 @@ GRQCommand* CommandFactory::CreateGRQCommand()
 Command* CommandFactory::CreateCommand(std::string &type)
 {
     Command *command;
+
+   // LogManager &log = LogManager::Instance();
+    //QObject::connect(command, SIGNAL(error()), &log, SIGNAL(exit()));
     if(!std::strcmp(type.c_str(), "GRQ"))
     {
         command = new GRQCommand(GRQ);

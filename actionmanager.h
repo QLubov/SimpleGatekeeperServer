@@ -10,6 +10,7 @@
 #include <enumOfStates.h>
 class ActionManager// : public QObject
 {
+ //   Q_OBJECT
 public:
     ~ActionManager();
     static ActionManager& Instance();
@@ -17,16 +18,17 @@ public:
     H323GatekeeperRequest::Response ExecuteCommand(H323GatekeeperListener*, /*H323GatekeeperGRQ&);//*/H323GatekeeperRequest*);
     void ParseXML(QFile*);
     //enum States {};
-    int CountOfCommand();
+    int GetCountOfCommand();
+    void deleteScenario();
 private:
     ActionManager();
     ActionManager (const ActionManager&);
     ActionManager& operator=(const ActionManager&);
     static ActionManager *instance;
-
+    //int count;
     std::queue<Command*>* commands;
-/*signals:
-    void error();*/
+//signals:
+//    void stop();
 };
 
 #endif // ACTIONMANAGER_H

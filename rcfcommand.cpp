@@ -22,12 +22,13 @@ H323GatekeeperRequest::Response RCFCommand::execute(H323GatekeeperListener *list
     }
 
     //if (info->rrq.HasOptionalField(H225_RegistrationRequest::e_endpointIdentifier))
-      //  info->endpoint = listener->GetGatekeeper().FindEndPointByIdentifier(info->rrq.m_endpointIdentifier);//вот в этой штуке плохая ошибка
+    //    info->endpoint = listener->GetGatekeeper().FindEndPointBySignalAddress(info->rrq.m_rasAddress[0]);//.FindEndPointByIdentifier(info->rrq.m_endpointIdentifier.GetValue());//вот в этой штуке плохая ошибка
      if (!info->CheckGatekeeperIdentifier())
      {
          LogManager &log = LogManager::Instance();
          log.PushLog(QString(" Err in RCFCommand!"));
          std::cout<<" Err in RCFCommand!"<<std::endl;
+         return H323GatekeeperRequest::Reject;
          //stop server
        //std::cout<<"H323GatekeeperListener::OnRegistration reject!"<<std::endl;
        //return H323GatekeeperRequest::Reject;
@@ -40,7 +41,7 @@ H323GatekeeperRequest::Response RCFCommand::execute(H323GatekeeperListener *list
        //info.SetRejectReason(H225_RegistrationRejectReason::e_invalidRevision);
        //PTRACE(2, "RAS\tRRQ rejected, version 1 not supported");
        //std::cout<<"H323GatekeeperListener::OnRegistration reject!"<<std::endl;
-       //return H323GatekeeperRequest::Reject;
+       return H323GatekeeperRequest::Reject;
      }
 
      H323GatekeeperRequest::Response response = listener->GetGatekeeper().OnRegistration(*info);
@@ -49,10 +50,12 @@ H323GatekeeperRequest::Response RCFCommand::execute(H323GatekeeperListener *list
          LogManager &log = LogManager::Instance();
          log.PushLog(QString(" Err in RRQCommand!"));
          std::cout<<" Err in RRQCommand!"<<std::endl;
+         return H323GatekeeperRequest::Reject;
         // std::cout<<"H323GatekeeperListener::OnRegistration response!"<<std::endl;
        //return response;
      }
 
+    //info->rrq.m_timeToLive.SetValue(600);
      // Adjust the authenticator remote ID to endpoint ID
      if (!info->rrq.m_keepAlive) {
        PSafePtr<H323RegisteredEndPoint> lock(info->endpoint, PSafeReadWrite);

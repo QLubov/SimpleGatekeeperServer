@@ -20,14 +20,15 @@ H323GatekeeperRequest::Response URQCommand::execute(H323GatekeeperListener *list
     else
     {
         LogManager &log = LogManager::Instance();
-        log.PushLog(QString(" Err in URQCommand!"));
-        std::cout<<" Err in RRQCommand!"<<std::endl;
+        log.PushLog(QString(" Err in URQCommand! (scenario)"));
+        std::cout<<" Err in URQCommand!"<<std::endl;
+        return H323GatekeeperRequest::Reject;
         //stop gatekeeperserver
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString(QString("Err in GRQCommand!")));
     }
 
 
-    return H323GatekeeperRequest::Confirm;//exit
+    //return H323GatekeeperRequest::Confirm;//exit
 
 }

@@ -1,7 +1,7 @@
 #ifndef QSERVERTHREAD_H
 #define QSERVERTHREAD_H
 
-
+//#include "killerthread.h"
 #include <QThread>
 #include "gatekeeperserver.h"
 #include "endpoint.h"

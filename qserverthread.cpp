@@ -48,32 +48,35 @@ void QServerThread::run()
     server = new GatekeeperServer(ep);
     LogManager &log = LogManager::Instance();
     log.PushLog(QString("server run!"));
-    while(flag)
+    ActionManager &mng = ActionManager::Instance();
+    while(flag && mng.GetCountOfCommand())
     {
     }
+    delete server;
+    log.PushLog(QString("server stop!"));
+    log.clearLogs();
     return;
 }
 void QServerThread::StartThread(QFile *file)
 {
     ActionManager &mng = ActionManager::Instance();
     mng.ParseXML(file);
-    //connect(&mng, SIGNAL(error()), this, SLOT(end()));
+    //connect(&mng, SIGNAL(stop()), this, SLOT(end()));
     LogManager &log = LogManager::Instance();
     connect(&log, SIGNAL(updateLogs(QString)), this, SIGNAL(update(QString)));
     //log.PushLog(QString("in StartThread!"));
-
+    //KillerThread &killer = KillerThread::Instance();
+    //connect(&killer, SIGNAL(exit()), this, SLOT(end()));
     this->start();
 }
 void QServerThread::end()
 {
     //exit(0);
     //deleteLater();
-    LogManager &log = LogManager::Instance();
-    log.PushLog(QString("server stop!"));
-    log.clearLogs();
-    delete server;
+    //LogManager &log = LogManager::Instance();
+
+
     flag = false;
-
-
+    //delete server;
     //deleteLater();
 }

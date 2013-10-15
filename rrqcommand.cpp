@@ -20,8 +20,9 @@ H323GatekeeperRequest::Response RRQCommand::execute(H323GatekeeperListener *list
     else
     {
         LogManager &log = LogManager::Instance();
-        log.PushLog(QString(" Err in RRQCommand!"));
+        log.PushLog(QString(" Err in RRQCommand! (scenario)"));
         std::cout<<" Err in RRQCommand!"<<std::endl;
+        return H323GatekeeperRequest::Reject;
         //stop gatekeeperserver
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString(QString("Err in GRQCommand!")));

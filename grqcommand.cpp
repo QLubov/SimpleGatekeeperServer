@@ -10,16 +10,19 @@ H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *list
         return mng.ExecuteCommand(listener, grqInfo);
     else
     {
-        std::cout<<" Err in GRQCommand!"<<std::endl;
+        std::cout<<" Err in GRQCommand (scenario)!"<<std::endl;
         LogManager &log = LogManager::Instance();
         log.PushLog(QString("Err in GRQCommand!"));
+        return H323GatekeeperRequest::Reject;
+        //KillerThread &killer = KillerThread::Instance();
+        //killer.Kill();
         //stop gatekeeperserver
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString(QString("Err in GRQCommand!")));
     }
 
 
-    return H323GatekeeperRequest::Confirm;//exit
+    //exit
 
 }
 

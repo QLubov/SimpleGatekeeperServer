@@ -1,12 +1,13 @@
 #ifndef GCFCOMMAND_H
 #define GCFCOMMAND_H
 #pragma once
-#include <command.h>
+/*#include <command.h>
 #include <iostream>
 #include "ptlib.h"
 #include "h323.h"
 #include "gkserver.h"
-
+#include "logmanager.h"*/
+#include "actionmanager.h"
 class GCFCommand : public Command
 {
     //Q_OBJECT

@@ -61,9 +61,12 @@ void MainWindow::startScenario()
         QFile *file = new QFile(name);
         QServerThread *thread = new QServerThread(this);
         connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+        connect(thread, SIGNAL(finished()), this, SLOT(stopScenario()));
         connect(thread, SIGNAL(update(QString)), this, SLOT(updateLogs(QString)));
         connect(this, SIGNAL(exit()), thread, SLOT(end()));
         //connect(this, SIGNAL(exit()), thread, SLOT(deleteLater()));
+        KillerThread &killer = KillerThread::Instance();
+        connect(&killer, SIGNAL(exit()), this, SLOT(stopScenario()));
         //thread->start();
         thread->StartThread(file);
     }

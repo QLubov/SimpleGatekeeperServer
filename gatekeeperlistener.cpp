@@ -22,6 +22,11 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
 
         LogManager &log = LogManager::Instance();
         log.PushLog(QString("Err in onDiscovery"));
+        //KillerThread &killer = KillerThread::Instance();
+        //killer.Kill();
+        mng.deleteScenario();//the commands queue should be erased for exiting
+        //return H323GatekeeperRequest::Reject;
+        //exit(0);
         //mng.error();
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString("Err in onDiscovery!"));
@@ -41,18 +46,34 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
 
  H323GatekeeperRequest::Response GatekeeperListener::OnRegistration(H323GatekeeperRRQ & info)
  {
+
    PTRACE_BLOCK("H323GatekeeperListener::OnRegistration");
     std::cout<<"H323GatekeeperListener::OnRegistration"<<std::endl;
+    //LogManager &log = LogManager::Instance();
+    //log.PushLog(QString(info.rrq.m_requestSeqNum + "!!!!!"));
+    static int count = 0;
 
     ActionManager &mng = ActionManager::Instance();
     if(mng.CheckState(RRQ))
-        return mng.ExecuteCommand(this, &info);
+    {
+        count++;
+        return mng.ExecuteCommand(this, &info);        
+    }
     else
     {
-        std::cout<<"Err in onRegistration!"<<std::endl;
-
+        if(count == 0)
+        {
+            std::cout<<"Err in onRegistration!"<<std::endl;
+            LogManager &log = LogManager::Instance();
+            log.PushLog(QString("Err in onRegistration"));
+            mng.deleteScenario();
+            return H323GatekeeperRequest::Confirm;
+        }
+        else
+            std::cout<<count<<std::endl;
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString("Err in onDiscovery!"));
+        //
     }
 
 }
@@ -73,11 +94,13 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
     else
     {
         std::cout<<"Err in onUnregistration!"<<std::endl;
-
+        LogManager &log = LogManager::Instance();
+        log.PushLog(QString("Err in onUnregistration"));
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString("Err in onDiscovery!"));
+        return H323GatekeeperRequest::Reject;
     }
-      info.endpoint = gatekeeper.FindEndPointBySignalAddresses(info.urq.m_callSignalAddress);
+    /*  info.endpoint = gatekeeper.FindEndPointBySignalAddresses(info.urq.m_callSignalAddress);
 
     if (info.endpoint == NULL) {
       info.SetRejectReason(H225_UnregRejectReason::e_notCurrentlyRegistered);
@@ -85,7 +108,7 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
       return H323GatekeeperRequest::Reject;
     }
 
-    return gatekeeper.OnUnregistration(info);
+    return gatekeeper.OnUnregistration(info);*/
   }
  /*bool GatekeeperListener::HandleTransaction(const PASN_Object & rawPDU)
  {

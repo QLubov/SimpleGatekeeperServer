@@ -3,6 +3,7 @@
 #pragma once
 
 
+//#include "killerthread.h"
 #include <QMainWindow>
 #include <QFileDialog>
 
