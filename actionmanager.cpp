@@ -60,3 +60,8 @@ void ActionManager::deleteScenario()
     for(int i = 0; i < commands->size(); i++)
         commands->pop();
 }
+
+QString ActionManager::GetCommandName()
+{
+    return commands->front()->GetName();
+}

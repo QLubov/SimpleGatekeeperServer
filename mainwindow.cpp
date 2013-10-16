@@ -1,35 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-/*void run()
-{
-    /*H323EndPoint ep;
-    H323GatekeeperServer *serv = new H323GatekeeperServer(ep);
-    serv->SetGatekeeperIdentifier("LubaSERVER");
-    PString iface, listenPort;
-    iface = "192.168.135.49";
-        //iface = "224.0.1.41";
-    listenPort = "1719";
-        //listenPort = H225_RAS::DefaultRasMulticastPort;
 
-    PIPSocket::Address interfaceAddress(iface);
-    WORD interfacePort = (WORD)listenPort.AsInteger();
-    H323Transport *transport = new H323TransportUDP(ep, interfaceAddress, interfacePort, 1);
-
-    H323GatekeeperListener *tr = new H323GatekeeperListener(ep, *serv, serv->GetGatekeeperIdentifier(), transport);
-
-    if(serv->AddListener(tr))
-        std::cout<<"Listener "<<tr->GetInterfaceAddresses()<<" was added!"<<std::endl;*/
-    /*EndPoint ep;
-    GatekeeperServer *gk = new GatekeeperServer(ep);
-    for (;;)
-        {
-           /* PCaselessString cmd;
-            cin >> cmd;
-            if (cmd == "X")
-              break;*//*
-
-        }
-}*/
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -37,6 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     //wnd = 0;
     //thread = new QServerThread(this);
+    //QIcon icon("C:\Qt\Qt5.1.0\Tools\QtCreator\bin\gatekeeper\edit.ico");
+    //ui->pushButton->setIcon(icon);
+    //QSize size(48,48);
+    //ui->pushButton->setIconSize(size);
 }
 
 MainWindow::~MainWindow()
@@ -65,11 +40,13 @@ void MainWindow::startScenario()
         connect(thread, SIGNAL(update(QString)), this, SLOT(updateLogs(QString)));
         connect(this, SIGNAL(exit()), thread, SLOT(end()));
         //connect(this, SIGNAL(exit()), thread, SLOT(deleteLater()));
-        KillerThread &killer = KillerThread::Instance();
-        connect(&killer, SIGNAL(exit()), this, SLOT(stopScenario()));
+        //KillerThread &killer = KillerThread::Instance();
+        //connect(&killer, SIGNAL(exit()), this, SLOT(stopScenario()));
         //thread->start();
         thread->StartThread(file);
     }
+    QProcess *proc = new QProcess(this);
+    proc->start("writer");
     //commands = xml.ReadFile(file);
     //int size = commands->size();
 

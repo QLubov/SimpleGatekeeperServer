@@ -47,6 +47,7 @@ void QServerThread::run()
     H323EndPoint ep;
     server = new GatekeeperServer(ep);
     LogManager &log = LogManager::Instance();
+    log.clearLogs();
     log.PushLog(QString("server run!"));
     ActionManager &mng = ActionManager::Instance();
     while(flag && mng.GetCountOfCommand())
@@ -54,7 +55,7 @@ void QServerThread::run()
     }
     delete server;
     log.PushLog(QString("server stop!"));
-    log.clearLogs();
+
     return;
 }
 void QServerThread::StartThread(QFile *file)

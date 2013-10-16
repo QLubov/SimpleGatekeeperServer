@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>edit.ico</file>
+        <file>open.ico</file>
+        <file>save.ico</file>
+        <file>run.ico</file>
+        <file>stop.ico</file>
+        <file>D:/picture/Save.png</file>
+        <file>stop-red.png</file>
+        <file>Open.png</file>
+        <file>pen.png</file>
+        <file>Save.png</file>
+        <file>start.png</file>
+    </qresource>
+</RCC>

@@ -20,6 +20,7 @@ public:
     //virtual H323GatekeeperRequest::Response OnDiscovery (H323GatekeeperGRQ &info);
     virtual H323GatekeeperRequest::Response OnRegistration(H323GatekeeperRRQ & info);
     //virtual H323GatekeeperRequest::Response OnAdmission(H323GatekeeperARQ & info);
+    H323GatekeeperRequest::Response OnRegistrationInfo(H323GatekeeperRRQ & info);
 };
 
 #endif // GATEKEEPERSERVER_H

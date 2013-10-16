@@ -2,7 +2,7 @@
 #define COMMAND_H
 #pragma once
 //#include <QObject>
-#include "killerthread.h"
+//#include "killerthread.h"
 #include <QString.h>
 #include <ptlib.h>
 #include <h323.h>

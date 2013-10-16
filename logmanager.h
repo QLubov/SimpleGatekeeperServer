@@ -1,7 +1,9 @@
 #ifndef LOGMANAGER_H
 #define LOGMANAGER_H
 #include <QObject>
-
+#include <QTime>
+#include <QTextStream>
+#include <QFile>
 class LogManager : public QObject
 {
     Q_OBJECT
@@ -16,6 +18,7 @@ private:
     LogManager& operator=(const LogManager&);
     static LogManager *instance;
     QList<QString> logs;
+    //QFile *logFile;
 signals:
     void updateLogs(QString);
     void exit();

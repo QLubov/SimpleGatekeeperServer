@@ -6,6 +6,7 @@
 //#include "gkserver.h"
 #include "actionmanager.h"
 //#include "logwindow.h"
+#include "rcfcommand.h"
 
 class GatekeeperListener
         : public H323GatekeeperListener
@@ -18,6 +19,8 @@ public:
     //bool OnReceiveGatekeeperRequest (const H323RasPDU &, const H225_GatekeeperRequest &);
     virtual H323GatekeeperRequest::Response OnRegistration(H323GatekeeperRRQ & info);
     H323GatekeeperRequest::Response OnUnregistration(H323GatekeeperURQ & info);
+private:
+    H323GatekeeperRequest::Response OnRegistrationInfo(H323GatekeeperRRQ & info);
     //bool HandleTransaction(const PASN_Object & rawPDU);
 };
 

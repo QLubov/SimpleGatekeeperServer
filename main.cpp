@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "mymainwindow.h"
 #include <QApplication>
 //#include "xmlreader.h"
 #include <h323.h>
@@ -22,7 +22,7 @@ void form::Main()
     int argc;
     char *argv[1];
     QApplication a(argc, argv);
-    MainWindow w;
+    MyMainWindow w;
     w.show();
 
 

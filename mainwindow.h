@@ -6,7 +6,7 @@
 //#include "killerthread.h"
 #include <QMainWindow>
 #include <QFileDialog>
-
+#include <QProcess>
 //#include "endpoint.h"
 //#include <h323.h>
 //#include "gatekeeperserver.h"

@@ -20,6 +20,7 @@ public:
     //enum States {};
     int GetCountOfCommand();
     void deleteScenario();
+    QString GetCommandName();
 private:
     ActionManager();
     ActionManager (const ActionManager&);

@@ -21,15 +21,10 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
         std::cout<<"Err in onDiscovery!"<<std::endl;
 
         LogManager &log = LogManager::Instance();
-        log.PushLog(QString("Err in onDiscovery"));
-        //KillerThread &killer = KillerThread::Instance();
-        //killer.Kill();
+        log.PushLog(QString("Error: waiting " + mng.GetCommandName() + ", but recieving GRQ!"));
+
         mng.deleteScenario();//the commands queue should be erased for exiting
-        //return H323GatekeeperRequest::Reject;
-        //exit(0);
-        //mng.error();
-        //LogWindow & log = LogWindow::Instance();
-        //log.update(QString("Err in onDiscovery!"));
+        return H323GatekeeperRequest::Reject;
     }
 
 
@@ -65,12 +60,19 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
         {
             std::cout<<"Err in onRegistration!"<<std::endl;
             LogManager &log = LogManager::Instance();
-            log.PushLog(QString("Err in onRegistration"));
+            log.PushLog(QString("Error: waiting " + mng.GetCommandName() + ", but recieving RRQ!"));
             mng.deleteScenario();
-            return H323GatekeeperRequest::Confirm;
+            return H323GatekeeperRequest::Reject;
         }
         else
+        {
             std::cout<<count<<std::endl;
+            //RCFCommand com(RCF);
+            //com.execute(this, &info);
+            //return OnRegistrationInfo(info);//ping
+
+            //return H323GatekeeperRequest::Confirm;//return gatekeeper.OnRegistrationInfo()
+        }
         //LogWindow & log = LogWindow::Instance();
         //log.update(QString("Err in onDiscovery!"));
         //
@@ -278,3 +280,18 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
     return listener->gatekeeper.OnDiscovery(info);
     //return H323GatekeeperRequest::Response::Confirm;
 }*/
+H323GatekeeperRequest::Response GatekeeperListener::OnRegistrationInfo(H323GatekeeperRRQ & info)
+{
+    if (info.rrq.m_keepAlive) {
+      if (info.endpoint != NULL)
+      {
+          std::cout<<"return info.endpoint->OnRegistration(info)"<<std::endl;
+        return info.endpoint->OnRegistration(info);
+      }
+
+      info.SetRejectReason(H225_RegistrationRejectReason::e_fullRegistrationRequired);
+      PTRACE(2, "RAS\tRRQ keep alive rejected, not registered");
+      std::cout<<"Reject"<<std::endl;
+      return H323GatekeeperRequest::Reject;
+    }
+}

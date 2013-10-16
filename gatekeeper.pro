@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = gatekeeper
 TEMPLATE = app
-
+RESOURCES += run.qrc
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -33,7 +33,7 @@ SOURCES += main.cpp\
     urqcommand.cpp \
     ucfcommand.cpp \
     urjcommand.cpp \
-    killerthread.cpp
+    mymainwindow.cpp
 
 HEADERS  += mainwindow.h \
     logwindow.h \
@@ -56,10 +56,11 @@ HEADERS  += mainwindow.h \
     urqcommand.h \
     ucfcommand.h \
     urjcommand.h \
-    killerthread.h
+    mymainwindow.h
 
 FORMS    += mainwindow.ui \
-    logwindow.ui
+    logwindow.ui \
+    mymainwindow.ui
 
 INCLUDEPATH += D:/newh323/ptlib/include
 INCLUDEPATH += D:/newh323/h323plus/include

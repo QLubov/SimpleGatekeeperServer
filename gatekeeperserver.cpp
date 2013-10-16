@@ -447,3 +447,18 @@ GatekeeperServer::~GatekeeperServer(void)
    return response;
  }
 */
+ H323GatekeeperRequest::Response GatekeeperServer::OnRegistrationInfo(H323GatekeeperRRQ & info)
+ {
+     if (info.rrq.m_keepAlive) {
+       if (info.endpoint != NULL)
+       {
+           std::cout<<"return info.endpoint->OnRegistration(info)"<<std::endl;
+         return info.endpoint->OnRegistration(info);
+       }
+
+       info.SetRejectReason(H225_RegistrationRejectReason::e_fullRegistrationRequired);
+       PTRACE(2, "RAS\tRRQ keep alive rejected, not registered");
+       std::cout<<"Reject"<<std::endl;
+       return H323GatekeeperRequest::Reject;
+     }
+ }
