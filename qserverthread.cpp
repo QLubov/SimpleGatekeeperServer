@@ -54,17 +54,20 @@ void QServerThread::run()
     {
     }
     delete server;
-    log.PushLog(QString("server stop!"));
+    if(flag)
+        log.PushLog(QString("Scenario was successfully finished"));
+    else
+       log.PushLog(QString("server stop"));
 
     return;
 }
 void QServerThread::StartThread(QFile *file)
 {
-    ActionManager &mng = ActionManager::Instance();
-    mng.ParseXML(file);
-    //connect(&mng, SIGNAL(stop()), this, SLOT(end()));
     LogManager &log = LogManager::Instance();
     connect(&log, SIGNAL(updateLogs(QString)), this, SIGNAL(update(QString)));
+    log.PushLog(QString("Scenario " + file->fileName() + " open"));
+    ActionManager &mng = ActionManager::Instance();
+    mng.ParseXML(file);
     //log.PushLog(QString("in StartThread!"));
     //KillerThread &killer = KillerThread::Instance();
     //connect(&killer, SIGNAL(exit()), this, SLOT(end()));

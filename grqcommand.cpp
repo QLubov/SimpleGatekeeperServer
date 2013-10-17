@@ -12,18 +12,9 @@ H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *list
     {
         std::cout<<" Err in GRQCommand (scenario)!"<<std::endl;
         LogManager &log = LogManager::Instance();
-        log.PushLog(QString("Err in GRQCommand!"));
-        return H323GatekeeperRequest::Reject;
-        //KillerThread &killer = KillerThread::Instance();
-        //killer.Kill();
-        //stop gatekeeperserver
-        //LogWindow & log = LogWindow::Instance();
-        //log.update(QString(QString("Err in GRQCommand!")));
-    }
-
-
-    //exit
-
+        log.PushLog(QString("Scenario is invalid"));
+        return H323GatekeeperRequest::Reject;        
+    }   
 }
 
 GRQCommand::GRQCommand(int state)
@@ -34,11 +25,4 @@ GRQCommand::GRQCommand(int state)
 GRQCommand::~GRQCommand()
 {
 }
-
-/*PString GRQCommand::GetName()
-{
-    PString str("GRQ";)
-    return str;
-}*/
-
 

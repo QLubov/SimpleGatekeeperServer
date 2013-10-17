@@ -98,7 +98,7 @@
    <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Gatekeeper</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>

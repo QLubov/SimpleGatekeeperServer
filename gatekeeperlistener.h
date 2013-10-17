@@ -15,13 +15,11 @@ public:
     GatekeeperListener(H323EndPoint &endpoint, H323GatekeeperServer &server, const PString &gatekeeperIdentifier/*, SimpleGatekeeper *gatekeeper*/, H323Transport *transport);
     virtual ~GatekeeperListener(void);
     virtual H323GatekeeperRequest::Response OnDiscovery (H323GatekeeperGRQ & info) ;
-    //friend H323GatekeeperRequest::Response GCFCommand::execute(H323GatekeeperListener *listener, H323GatekeeperGRQ &info);
-    //bool OnReceiveGatekeeperRequest (const H323RasPDU &, const H225_GatekeeperRequest &);
     virtual H323GatekeeperRequest::Response OnRegistration(H323GatekeeperRRQ & info);
     H323GatekeeperRequest::Response OnUnregistration(H323GatekeeperURQ & info);
 private:
+    bool flag;
     H323GatekeeperRequest::Response OnRegistrationInfo(H323GatekeeperRRQ & info);
-    //bool HandleTransaction(const PASN_Object & rawPDU);
 };
 
 

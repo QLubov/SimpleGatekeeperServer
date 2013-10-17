@@ -52,7 +52,7 @@ void MyMainWindow::stopScenario()
 }
 void MyMainWindow::updateLogs(QString Message)
 {
-    ui->textBrowser->setText(ui->textBrowser->toPlainText() + "\n" + Message);
+    ui->textBrowser->setText(ui->textBrowser->toPlainText() + Message + "\n");
 }
 void MyMainWindow::ClearLogs()
 {

@@ -15,17 +15,16 @@ H323GatekeeperRequest::Response UCFCommand::execute(H323GatekeeperListener *list
     if(info == 0)
     {
         LogManager &log = LogManager::Instance();
-        log.PushLog(QString("Err in UCFCommand!"));
+        log.PushLog(QString("URQ is invalid"));
         return H323GatekeeperRequest::Reject;
     }
     info->endpoint = listener->GetGatekeeper().FindEndPointBySignalAddresses(info->urq.m_callSignalAddress);
 
     if (info->endpoint == NULL) {
-        info->SetRejectReason(H225_UnregRejectReason::e_notCurrentlyRegistered);
-        //PTRACE(2, "RAS\tURQ rejected, not registered");
+        info->SetRejectReason(H225_UnregRejectReason::e_notCurrentlyRegistered);        
 
         LogManager &log = LogManager::Instance();
-        log.PushLog(QString(" Err in UCFCommand: URQ rejected, not registered"));
+        log.PushLog(QString("URQ rejected, not registered"));
         std::cout<<" Err in UCFCommand!"<<std::endl;
         return H323GatekeeperRequest::Reject;
   }
@@ -33,10 +32,9 @@ H323GatekeeperRequest::Response UCFCommand::execute(H323GatekeeperListener *list
     if (response != H323GatekeeperRequest::Confirm)
     {
         LogManager &log = LogManager::Instance();
-        log.PushLog(QString(" Err in UCFCommand!"));
+        log.PushLog(QString("Sending UCF failed"));
         std::cout<<" Err in UCFCommand!"<<std::endl;
-        return H323GatekeeperRequest::Reject;
-        //exit
+        return H323GatekeeperRequest::Reject;        
     }
     else
         return response;

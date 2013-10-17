@@ -10,7 +10,7 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     //log.show();
     //log.update(QString("Create a gatekeeper"));
 
-    this->SetGatekeeperIdentifier("LubaServer", 1);
+    this->SetGatekeeperIdentifier("Gatekeeper", 1);
     this->SetTimeToLive(600);
     //this->SetAvailableBandwidth(32);
     //this->SetInfoResponseRate(10);
