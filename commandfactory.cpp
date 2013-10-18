@@ -8,12 +8,18 @@ GRQCommand* CommandFactory::CreateGRQCommand()
 {
     return new GRQCommand;
 }*/
-Command* CommandFactory::CreateCommand(std::string &type)
+Command* CommandFactory::CreateCommand(std::string &type, int value)
 {
     Command *command;
 
    // LogManager &log = LogManager::Instance();
     //QObject::connect(command, SIGNAL(error()), &log, SIGNAL(exit()));
+    if(!std::strcmp(type.c_str(), "delay"))
+    {
+        command = new DelayCommand(delay, value);
+        return command;
+    }
+
     if(!std::strcmp(type.c_str(), "GRQ"))
     {
         command = new GRQCommand(GRQ);

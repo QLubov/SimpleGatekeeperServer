@@ -14,7 +14,8 @@ H323GatekeeperRequest::Response URQCommand::execute(H323GatekeeperListener *list
     std::cout<<" URQCommand"<<std::endl;
 
     ActionManager &mng = ActionManager::Instance();
-
+    if(mng.CheckState(delay))
+        mng.ExecuteCommand(listener, urqInfo);
     if(mng.CheckState(UCF) || mng.CheckState(URJ))
         return mng.ExecuteCommand(listener, urqInfo);
     else

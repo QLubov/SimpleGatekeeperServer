@@ -1,29 +1,59 @@
 #include "gatekeeperserver.h"
 
+void GatekeeperServer::Configure()
+{
+    mGKPorts.push_back(H225_RAS::DefaultRasMulticastPort);
+    mGKPorts.push_back(H225_RAS::DefaultRasUdpPort);
+
+    PIPSocket::InterfaceTable IT;
+    PIPSocket::GetInterfaceTable(IT);
+    std::cout<<"ITSize "<<IT.GetSize()<<std::endl;
+    for(int i = 0; i < IT.GetSize(); i++)
+    {
+        mGKAddrs.push_back(IT[i].GetAddress());
+    }
+}
+
+void GatekeeperServer::Terminate()
+{
+    mGKAddrs.clear();
+    mGKPorts.clear();
+
+    //delete list of listeners!
+}
+
+void GatekeeperServer::GetTransportsByReference(H323EndPoint *Endpoint, vector<H323TransportUDP *> &Transport)
+{
+    Configure();
+    for(vector<PIPSocket::Address>::iterator i = mGKAddrs.begin(); i != mGKAddrs.end(); i++)
+    {
+        for(vector<WORD>::iterator j = mGKPorts.begin(); j != mGKPorts.end(); j++)
+        {
+            Transport.push_back(new H323TransportUDP(*Endpoint, *i, *j));
+        }
+    }
+}
+
+void GatekeeperServer::RemoveTransports(vector<H323TransportUDP *> &Transports)
+{
+    for(unsigned i = 0; i < Transports.size(); i++)
+    {
+        delete Transports[i];
+    }
+    Transports.clear();
+}
 
 GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     : H323GatekeeperServer(endpoint)
 {
-    std::cout<<"Create a gatekeeper!"<<std::endl;
-    //LogWindow& log = LogWindow::Instance();
-    //log.ClearLogs();
-    //log.show();
-    //log.update(QString("Create a gatekeeper"));
+    std::cout<<"Create a gatekeeper!"<<std::endl;    
 
     this->SetGatekeeperIdentifier("Gatekeeper", 1);
-    this->SetTimeToLive(600);
+    this->SetTimeToLive(1200);
     //this->SetAvailableBandwidth(32);
     //this->SetInfoResponseRate(10);
 
-    std::cout<<endpoint.IsGatekeeper()<<std::endl;
-    std::cout<<endpoint.FeatureSetDisabled()<<std::endl;
-    std::cout<<endpoint.GetFeatureSet()<<std::endl;
-    //endpoint.SetGkAccessTokenOID("itu-t.0");
-    //endpoint.SetCapability(0, 0, new H323_G711Capability(H323_G711Capability::muLaw));
-    //endpoint.SetCapability(0, 0, new H323_G711Capability(H323_G711Capability::ALaw));
     endpoint.SetLocalUserName("Luba");
-    //endpoint.LoadBaseFeatureSet();
-    //endpoint.SetQ931Display(true);
 
     //H323TransportAddress addr1("#ip$192.168.135.49:1719#");
     //H323TransportAddress addr2("#ip$127.0.0.1:1720#");
@@ -49,7 +79,7 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
 
     //WORD interfacePort3 = (WORD)listenPort.AsInteger();
 
-    H323Transport *transport = new H323TransportUDP(endpoint, interfaceAddress, interfacePort, 1);
+    /*H323Transport *transport = new H323TransportUDP(endpoint, interfaceAddress, interfacePort, 1);
     H323Transport *transport1 = new H323TransportUDP(endpoint, interfaceAddress, interfacePort1, 1);
     //H323Transport *transport2 = new H323TransportUDP(endpoint, interfaceAddress, interfacePort2, 1);
     H323Transport *transport3 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort, 1);
@@ -73,9 +103,26 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     //H323GatekeeperListener *tr7 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport7);
 
     //tr->SetCheckResponseCryptoTokens(true);
-    tr->SetIdentifier(this->GetGatekeeperIdentifier());
+    */
 
-    if(this->AddListener(tr))
+    vector<H323TransportUDP *> transports;// = new vector<H323TransportUDP*>;
+    GetTransportsByReference(&endpoint, transports);
+    std::cout<<transports.size()<<std::endl;
+    for(vector<H323TransportUDP *>::iterator i = transports.begin(); i != transports.end(); i++)
+    {
+        listeners.push_back(new GatekeeperListener(endpoint, *this, this->GetGatekeeperIdentifier(), *i));
+    }
+
+    for(list<GatekeeperListener*>::iterator i = listeners.begin(); i != listeners.end(); i++)
+    {
+        if(AddListener(*i))
+            std::cout<<"Listener "<<(*i)->GetInterfaceAddresses()<<" was added!"<<std::endl;
+    }
+
+    //RemoveTransports(transports);
+    //tr->SetIdentifier(this->GetGatekeeperIdentifier());
+
+    /*if(this->AddListener(tr))
     {
         std::cout<<"Listener "<<tr->GetInterfaceAddresses()<<" was added!"<<std::endl;
         //log.update(QString("Listener was added"));
@@ -89,7 +136,7 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
     {
         std::cout<<"Listener "<<tr2->GetInterfaceAddresses()<<" was added!"<<std::endl;
     }*/
-    if(this->AddListener(tr3))
+    /*if(this->AddListener(tr3))
     {
         std::cout<<"Listener "<<tr3->GetInterfaceAddresses()<<" was added!"<<std::endl;
     }
@@ -115,6 +162,11 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
 
 GatekeeperServer::~GatekeeperServer(void)
 {
+    Terminate();
+    /*for(list<GatekeeperListener*>::iterator i = listeners.end(); i != listeners.begin(); i--)
+    {
+        delete *i;
+    }*/
 }
 
 /*H323GatekeeperRequest::Response GatekeeperServer::OnDiscovery(H323GatekeeperGRQ &info)

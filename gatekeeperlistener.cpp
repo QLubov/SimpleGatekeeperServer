@@ -16,7 +16,7 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
     log.PushLog(QString("Establish connection with " + info.GetReplyAddress().GetHostName()));
 
     ActionManager &mng = ActionManager::Instance();
-    if(mng.CheckState(GRQ))
+    if(mng.CheckState(GRQ))// || mng.CheckState(delay))
         return mng.ExecuteCommand(this, &info);
     else
     {

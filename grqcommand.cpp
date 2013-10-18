@@ -5,7 +5,8 @@ H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *list
     std::cout<<" GRQCommand"<<std::endl;
 
     ActionManager &mng = ActionManager::Instance();
-
+    if(mng.CheckState(delay))
+        mng.ExecuteCommand(listener, grqInfo);
     if(mng.CheckState(GCF) || mng.CheckState(GRJ))
         return mng.ExecuteCommand(listener, grqInfo);
     else

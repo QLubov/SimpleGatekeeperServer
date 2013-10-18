@@ -8,11 +8,13 @@
 class GatekeeperServer:
     public H323GatekeeperServer
 {
-
-    /*virtual void Configure();
-    virtual void Terminate();*/
-
-
+    virtual void Configure();
+    virtual void Terminate();
+    std::vector<PIPSocket::Address> mGKAddrs;
+    std::vector<WORD> mGKPorts;
+    void	GetTransportsByReference(H323EndPoint *, vector<H323TransportUDP *> &);
+    void	RemoveTransports(vector<H323TransportUDP *> &);
+    list<GatekeeperListener*> listeners;
 public:
     GatekeeperServer(H323EndPoint &endpoint/*, H323Transport *transport*/);
     virtual ~GatekeeperServer(void);

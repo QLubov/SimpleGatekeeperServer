@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     urqcommand.cpp \
     ucfcommand.cpp \
     urjcommand.cpp \
-    mymainwindow.cpp
+    mymainwindow.cpp \
+    delaycommand.cpp
 
 HEADERS  += mainwindow.h \
     logwindow.h \
@@ -56,7 +57,8 @@ HEADERS  += mainwindow.h \
     urqcommand.h \
     ucfcommand.h \
     urjcommand.h \
-    mymainwindow.h
+    mymainwindow.h \
+    delaycommand.h
 
 FORMS    += mainwindow.ui \
     logwindow.ui \

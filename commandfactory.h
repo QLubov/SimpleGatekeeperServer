@@ -14,6 +14,7 @@
 #include <urqcommand.h>
 #include <ucfcommand.h>
 #include <urjcommand.h>
+#include <delaycommand.h>
 class CommandFactory
 {
 public:
@@ -21,7 +22,7 @@ public:
     ~CommandFactory(){}
     //GRQCommand* CreateGRQCommand();
     //GCFCommand* CreateGCFCommand();
-    Command* CreateCommand(std::string &type);
+    Command* CreateCommand(std::string &type, int value = 0);
 };
 
 #endif // COMMANDFACTORY_H

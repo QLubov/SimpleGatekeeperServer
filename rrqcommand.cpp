@@ -14,7 +14,8 @@ H323GatekeeperRequest::Response RRQCommand::execute(H323GatekeeperListener *list
     std::cout<<" RRQCommand"<<std::endl;
 
     ActionManager &mng = ActionManager::Instance();
-
+    if(mng.CheckState(delay))
+        mng.ExecuteCommand(listener, rrqInfo);
     if(mng.CheckState(RCF) || mng.CheckState(RRJ))
         return mng.ExecuteCommand(listener, rrqInfo);
     else
