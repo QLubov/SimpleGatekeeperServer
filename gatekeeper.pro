@@ -13,9 +13,7 @@ TEMPLATE = app
 RESOURCES += run.qrc
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     xmlreader.cpp \
-    logwindow.cpp \
     grqcommand.cpp \
     gcfcommand.cpp \
     commandfactory.cpp \
@@ -36,8 +34,7 @@ SOURCES += main.cpp\
     mymainwindow.cpp \
     delaycommand.cpp
 
-HEADERS  += mainwindow.h \
-    logwindow.h \
+HEADERS  += \
     grqcommand.h \
     gcfcommand.h \
     commandfactory.h \
@@ -60,8 +57,7 @@ HEADERS  += mainwindow.h \
     mymainwindow.h \
     delaycommand.h
 
-FORMS    += mainwindow.ui \
-    logwindow.ui \
+FORMS    += \
     mymainwindow.ui
 
 INCLUDEPATH += D:/newh323/ptlib/include

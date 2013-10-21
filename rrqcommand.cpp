@@ -9,7 +9,7 @@ RRQCommand::~RRQCommand()
 {
 }
 
-H323GatekeeperRequest::Response RRQCommand::execute(H323GatekeeperListener *listener, /*H323GatekeeperGRQ &info)//*/H323GatekeeperRequest *rrqInfo)
+H323GatekeeperRequest::Response RRQCommand::execute(H323GatekeeperListener *listener, H323GatekeeperRequest *rrqInfo)
 {
     std::cout<<" RRQCommand"<<std::endl;
 
@@ -23,6 +23,7 @@ H323GatekeeperRequest::Response RRQCommand::execute(H323GatekeeperListener *list
         LogManager &log = LogManager::Instance();
         log.PushLog(QString("Scenario is invalid"));
         std::cout<<" Err in RRQCommand!"<<std::endl;
+        mng.deleteScenario();
         return H323GatekeeperRequest::Reject;        
     }
 }

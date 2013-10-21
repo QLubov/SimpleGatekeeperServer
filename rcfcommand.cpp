@@ -10,11 +10,13 @@ RCFCommand::~RCFCommand()
 
 H323GatekeeperRequest::Response RCFCommand::execute(H323GatekeeperListener *listener,/* H323GatekeeperGRQ &info)//*/H323GatekeeperRequest *rrqInfo)
 {
+    ActionManager &mng = ActionManager::Instance();
     H323GatekeeperRRQ *info = dynamic_cast<H323GatekeeperRRQ*>(rrqInfo);
     if(info == 0)
     {
         LogManager &log = LogManager::Instance();
         log.PushLog(QString("RRQ is invalid"));
+        mng.deleteScenario();
         return H323GatekeeperRequest::Reject;
     }
 
@@ -23,6 +25,7 @@ H323GatekeeperRequest::Response RCFCommand::execute(H323GatekeeperListener *list
          LogManager &log = LogManager::Instance();
          log.PushLog(QString("Sending RCF failed"));
          std::cout<<" Err in RCFCommand!"<<std::endl;
+         mng.deleteScenario();
          return H323GatekeeperRequest::Reject;         
      }
 
@@ -31,6 +34,7 @@ H323GatekeeperRequest::Response RCFCommand::execute(H323GatekeeperListener *list
          log.PushLog(QString("RRQ rejected, version 1 not supported"));
          std::cout<<" Err in RRQCommand!"<<std::endl;
        info->SetRejectReason(H225_RegistrationRejectReason::e_invalidRevision);
+       mng.deleteScenario();
        return H323GatekeeperRequest::Reject;
      }
 
@@ -40,6 +44,7 @@ H323GatekeeperRequest::Response RCFCommand::execute(H323GatekeeperListener *list
          LogManager &log = LogManager::Instance();
          log.PushLog(QString("Sending RCF failed"));
          std::cout<<" Err in RRQCommand!"<<std::endl;
+         mng.deleteScenario();
          return H323GatekeeperRequest::Reject;        
      }
 

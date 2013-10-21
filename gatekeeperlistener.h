@@ -1,12 +1,8 @@
 #ifndef GATEKEEPERLISTENER_H
 #define GATEKEEPERLISTENER_H
 #pragma once
-//#include <ptlib.h>
-//#include "h323.h"
-//#include "gkserver.h"
+
 #include "actionmanager.h"
-//#include "logwindow.h"
-#include "rcfcommand.h"
 
 class GatekeeperListener
         : public H323GatekeeperListener

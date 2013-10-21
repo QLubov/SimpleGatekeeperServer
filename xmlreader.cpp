@@ -11,7 +11,7 @@ queue<Command*>* XMLReader::ReadFile(QFile *xmlFile)
         return ListOfCommand;
     }
     QXmlStreamReader xml(xmlFile);
-    //queue<Command*> *ListOfCommand = new queue<Command*>;
+
     while (!xml.atEnd() && !xml.hasError())
     {
         QXmlStreamReader::TokenType token = xml.readNext();
@@ -43,8 +43,8 @@ void XMLReader::parseAction(QXmlStreamReader& xml, queue<Command*>* ListOfComman
     }
     else
     {
-        if (xml.tokenType() != QXmlStreamReader::StartElement && xml.name() == "action")// || (xml.tokenType() != QXmlStreamReader::StartElement && xml.name() == "delay"))
-                return ;//ListOfCommand;
+        if (xml.tokenType() != QXmlStreamReader::StartElement && xml.name() == "action")
+                return ;
         xml.readNext();
         while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "action"))
         {
@@ -54,27 +54,11 @@ void XMLReader::parseAction(QXmlStreamReader& xml, queue<Command*>* ListOfComman
                 {
                     xml.readNext();
                     ListOfCommand->push(cmdFactory.CreateCommand(xml.text().toString().toStdString()));
-                    //cout<<xml.text().toString().toStdString()<<endl;
+
                 }
             }
             xml.readNext();
         }
-    }
-    /*//while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "delay"))
-    //{
-        if(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "delay"))//xml.tokenType() == QXmlStreamReader::StartElement)
-        {
-            //if(xml.name() == "delay")
-            //{
-             //   xml.readNext();
-                ListOfCommand->push(cmdFactory.CreateCommand(std::string("delay"),xml.text().toString().toInt()));
-                //cout<<xml.text().toString().toStdString()<<endl;
-           // }
-                xml.readNext();
-
-        }*/
-
-    //}
-    //return ListOfCommand;
+    }    
 }
 

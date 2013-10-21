@@ -55,57 +55,7 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
 
     endpoint.SetLocalUserName("Luba");
 
-    //H323TransportAddress addr1("#ip$192.168.135.49:1719#");
-    //H323TransportAddress addr2("#ip$127.0.0.1:1720#");
-    PString iface, iface1, listenPort, listenPort1;//, listenPort2, listenPort3;
-    iface = "192.168.135.49";
-    iface1 = "127.0.0.1";
-    listenPort = H225_RAS::DefaultRasUdpPort;//"1719";
-    listenPort1 = H225_RAS::DefaultRasMulticastPort;
-    //listenPort2 = "1720";
-    //listenPort3 = "1721";
-
-    PIPSocket::Address interfaceAddress(iface);
-    WORD interfacePort = (WORD)listenPort.AsInteger();
-
-    WORD interfacePort1 = (WORD)listenPort1.AsInteger();
-
-    //WORD interfacePort2 = (WORD)listenPort2.AsInteger();
-
-    //WORD interfacePort3 = (WORD)listenPort3.AsInteger();
-
-    PIPSocket::Address interfaceAddress1(iface1);
-
-
-    //WORD interfacePort3 = (WORD)listenPort.AsInteger();
-
-    /*H323Transport *transport = new H323TransportUDP(endpoint, interfaceAddress, interfacePort, 1);
-    H323Transport *transport1 = new H323TransportUDP(endpoint, interfaceAddress, interfacePort1, 1);
-    //H323Transport *transport2 = new H323TransportUDP(endpoint, interfaceAddress, interfacePort2, 1);
-    H323Transport *transport3 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort, 1);
-    H323Transport *transport4 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort1, 1);
-    //H323Transport *transport5 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort2, 1);
-
-    //H323Transport *transport6 = new H323TransportUDP(endpoint, interfaceAddress, interfacePort3, 1);
-    //H323Transport *transport7 = new H323TransportUDP(endpoint, interfaceAddress1, interfacePort3, 1);
-
-
-    H323GatekeeperServer *server = this;//new H323GatekeeperServer(endpoint);
-    //H323GatekeeperListener *tr = new SimpleGatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport);
-
-    H323GatekeeperListener *tr = new GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport);//new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport);
-    H323GatekeeperListener *tr1 = new GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport1);//H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport1);
-    //H323GatekeeperListener *tr2 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport2);
-    H323GatekeeperListener *tr3 = new GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport3);//new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport3);
-    H323GatekeeperListener *tr4 = new GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport4);
-    //H323GatekeeperListener *tr5 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport5);
-    //H323GatekeeperListener *tr6 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport6);
-    //H323GatekeeperListener *tr7 = new H323GatekeeperListener(endpoint, *server, this->GetGatekeeperIdentifier(), transport7);
-
-    //tr->SetCheckResponseCryptoTokens(true);
-    */
-
-    vector<H323TransportUDP *> transports;// = new vector<H323TransportUDP*>;
+    vector<H323TransportUDP *> transports;
     GetTransportsByReference(&endpoint, transports);
     std::cout<<transports.size()<<std::endl;
     for(vector<H323TransportUDP *>::iterator i = transports.begin(); i != transports.end(); i++)
@@ -118,58 +68,15 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
         if(AddListener(*i))
             std::cout<<"Listener "<<(*i)->GetInterfaceAddresses()<<" was added!"<<std::endl;
     }
-
-    //RemoveTransports(transports);
-    //tr->SetIdentifier(this->GetGatekeeperIdentifier());
-
-    /*if(this->AddListener(tr))
-    {
-        std::cout<<"Listener "<<tr->GetInterfaceAddresses()<<" was added!"<<std::endl;
-        //log.update(QString("Listener was added"));
-    }
-    if(this->AddListener(tr1))
-    {
-        std::cout<<"Listener "<<tr1->GetInterfaceAddresses()<<" was added!"<<std::endl;
-        //log.update(QString("Listener was added"));
-    }
-    /*if(this->AddListener(tr2))
-    {
-        std::cout<<"Listener "<<tr2->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    }*/
-    /*if(this->AddListener(tr3))
-    {
-        std::cout<<"Listener "<<tr3->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    }
-    if(this->AddListener(tr4))
-    {
-        std::cout<<"Listener "<<tr4->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    }
-    /*if(this->AddListener(tr5))
-    {
-        std::cout<<"Listener "<<tr5->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    }
-    if(this->AddListener(tr6))
-    {
-        std::cout<<"Listener "<<tr6->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    }
-    if(this->AddListener(tr7))
-    {
-        std::cout<<"Listener "<<tr7->GetInterfaceAddresses()<<" was added!"<<std::endl;
-    }*/
-
 }
 
 
 GatekeeperServer::~GatekeeperServer(void)
 {
-    Terminate();
-    /*for(list<GatekeeperListener*>::iterator i = listeners.end(); i != listeners.begin(); i--)
-    {
-        delete *i;
-    }*/
+    Terminate();    
 }
 
-/*H323GatekeeperRequest::Response GatekeeperServer::OnDiscovery(H323GatekeeperGRQ &info)
+H323GatekeeperRequest::Response GatekeeperServer::OnDiscovery(H323GatekeeperGRQ &info)
 {
     PTRACE_BLOCK("H323GatekeeperServer::OnDiscovery");
 
@@ -194,19 +101,13 @@ GatekeeperServer::~GatekeeperServer(void)
               info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_algorithmOID);
               info.gcf.m_algorithmOID = info.grq.m_algorithmOIDs[alg];
 
-
-
-              //std::cout<<"0"<<std::endl;
-               return H323GatekeeperRequest::Confirm;
+              return H323GatekeeperRequest::Confirm;
          }
        }
 
      }
    }
-     //info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e);
-    //для телефона раскомментить
-    //info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_authenticationMode);
-    //info.gcf.m_authenticationMode = info.grq.m_authenticationCapability[0];
+
 
     /*info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_tokens);
 
@@ -215,76 +116,10 @@ GatekeeperServer::~GatekeeperServer(void)
     info.gcf.m_tokens[0].IncludeOptionalField(H235_ClearToken::e_random);
     info.gcf.m_tokens[0].IncludeOptionalField(H235_ClearToken::e_timeStamp);
     info.gcf.m_tokens[0].m_generalID.SetValue("SERVERLuba");
-    info.gcf.m_tokens[0].m_random.SetValue(42);
+    info.gcf.m_tokens[0].m_random.SetValue(42);*/
 
-
-
-
-    //для телефона раскомментить
-   /* info.gcf.IncludeOptionalField(H225_GatekeeperConfirm::e_featureSet);
-    info.gcf.m_featureSet.m_replacementFeatureSet = true;
-    info.gcf.m_featureSet.IncludeOptionalField(H225_FeatureSet::e_desiredFeatures);
-    info.gcf.m_featureSet.IncludeOptionalField(H225_FeatureSet::e_supportedFeatures);
-
-
-    //для телефона раскомментить
-
-    /*info.gcf.m_featureSet.m_supportedFeatures.SetSize(2);
-
-    //info.gcf.m_featureSet.m_supportedFeatures[0].m_id = info.grq.m_featureSet.m_supportedFeatures[0].m_id;
-    //info.gcf.m_featureSet.m_supportedFeatures[1].m_id = info.grq.m_featureSet.m_supportedFeatures[1].m_id;
-
-
-    info.gcf.m_featureSet.m_supportedFeatures[0].m_parameters.SetSize(12);
-    info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters.SetSize(2);
-    info.gcf.m_featureSet.m_supportedFeatures[0].IncludeOptionalField(H225_GenericIdentifier::e_standard);
-    info.gcf.m_featureSet.m_supportedFeatures[1].IncludeOptionalField(H225_GenericIdentifier::e_standard);
-    //info.gcf.m_featureSet.m_supportedFeatures[0].m_id = info.grq.m_featureSet.m_supportedFeatures[0].m_id;
-
-    //info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[0].IncludeOptionalField(H225_EnumeratedParameter::e_content);
-    info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[0].IncludeOptionalField(H225_GenericData::e_parameters);
-    //info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[0].IncludeOptionalField(H225_Content::e_number8);
-
-    info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[0].m_content = H225_Content::e_number8;
-    info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[1].IncludeOptionalField(H225_GenericData::e_parameters);
-    //info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[1].IncludeOptionalField(H225_Content::e_number16);
-    info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[1].m_content = H225_Content::e_number16;
-
-    info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[0].m_id = info.grq.m_featureSet.m_supportedFeatures[1].m_id.e_standard;
-    std::cout<<"m_id  "<<info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[0].m_id<<std::endl;
-
-
-
-
-    info.gcf.m_featureSet.m_supportedFeatures[1].m_parameters[0].m_id = H225_GenericIdentifier::e_standard;
-
-
-
-    info.gcf.m_featureSet.m_desiredFeatures.SetSize(3);
-
-    info.gcf.m_featureSet.m_desiredFeatures[0].IncludeOptionalField(H225_GenericIdentifier::e_standard);
-    info.gcf.m_featureSet.m_desiredFeatures[1].IncludeOptionalField(H225_GenericIdentifier::e_standard);
-    //info.gcf.m_featureSet.m_desiredFeatures[0].m_id= info.grq.m_featureSet.m_supportedFeatures[0].m_id.e_standard;
-    //info.gcf.m_featureSet.m_desiredFeatures[1].m_id = info.grq.m_featureSet.m_supportedFeatures[1].m_id.e_standard;
-    //info.gcf.m_featureSet.m_desiredFeatures[2].m_id = ownerEndPoint.GetFeatureSet();
-
-
-    //info.gcf.m_featureSet.SetSize(2);
-    /*info.gcf.m_featureSet.m_supportedFeatures = info.grq.m_featureSet.m_supportedFeatures;
-    //info.gcf.m_featureSet.m_supportedFeatures[0].IncludeOptionalField(H225_GenericIdentifier::e_standard);
-    //info.gcf.m_featureSet.m_supportedFeatures[0].m_parameters[0].IncludeOptionalField(H225_Content::e_number16);
-    //std::cout<<"sizeoFArray  "<<info.gcf.m_featureSet.m_supportedFeatures[0].m_parameters.GetSize()<<std::endl;
-    //std::cout<<"blahblah  "<<info.gcf.m_featureSet.m_supportedFeatures[0].m_parameters[0].m_id<<std::endl;
-    //info.gcf.m_featureSet.m_supportedFeatures[0].m_parameters[0].m_id = H225_GenericIdentifier::
-    //info.gcf.m_featureSet.m_desiredFeatures[0].m_parameters.SetSize(12);
-    //info.gcf.m_featureSet.m_desiredFeatures[0].m_parameters[0].IncludeOptionalField(H225_EnumeratedParameter::e_content);
-    //info.gcf.m_featureSet.m_desiredFeatures[0].m_parameters[0].m_id = 0;
-    info.gcf.m_featureSet.m_desiredFeatures = info.grq.m_featureSet.m_supportedFeatures;
-             */
-
-  /*  std::cout<<"return Confirm  "<<std::endl;*/
-   /* return H323GatekeeperRequest::Confirm;
-}*/
+    return H323GatekeeperRequest::Confirm;
+}
 
  H323GatekeeperRequest::Response GatekeeperServer::OnRegistration(H323GatekeeperRRQ & info)
  {
@@ -429,88 +264,3 @@ GatekeeperServer::~GatekeeperServer(void)
    return H323GatekeeperRequest::Confirm;
  }
 
-/*
-  H323GatekeeperRequest::Response GatekeeperServer::OnAdmission(H323GatekeeperARQ & info)
- {
-   PTRACE_BLOCK("H323GatekeeperServer::OnAdmission");
-   std::cout<<"onAdmission"<<std::cout;
-   OpalGloballyUniqueID id = info.arq.m_callIdentifier.m_guid;
-   if (id == NULL) {
-     PTRACE(2, "RAS\tNo call identifier provided in ARQ!");
-     info.SetRejectReason(H225_AdmissionRejectReason::e_undefinedReason);
-     return H323GatekeeperRequest::Reject;
-   }
-
-   H323GatekeeperRequest::Response response;
-
-   PSafePtr<H323GatekeeperCall> oldCall = FindCall(id, info.arq.m_answerCall);
-   if (oldCall != NULL)
-     response = oldCall->OnAdmission(info);
-   else {
-     // If on restarted in thread, then don't create new call, should already
-     // have had one created on the last pass through.
-     if (!info.IsFastResponseRequired() && info.CanSendRIP()) {
-       PTRACE(2, "RAS\tCall object disappeared after starting slow PDU handler thread!");
-       info.SetRejectReason(H225_AdmissionRejectReason::e_undefinedReason);
-       return H323GatekeeperRequest::Reject;
-     }
-
-     H323GatekeeperCall * newCall = CreateCall(id,
-                             info.arq.m_answerCall ? H323GatekeeperCall::AnsweringCall
-                                                   : H323GatekeeperCall::OriginatingCall);
-     PTRACE(3, "RAS\tCall created: " << *newCall);
-
-     response = newCall->OnAdmission(info);
-
-     if (response != H323GatekeeperRequest::Reject) {
-       mutex.Wait();
-
-       info.endpoint->AddCall(newCall);
-       oldCall = activeCalls.Append(newCall);
-
-       if (activeCalls.GetSize() > peakCalls)
-         peakCalls = activeCalls.GetSize();
-       totalCalls++;
-
-       PTRACE(2, "RAS\tAdded new call (total=" << activeCalls.GetSize() << ") " << *newCall);
-       mutex.Signal();
-
-       AddCall(oldCall);
-     }
-   }
-
- #ifdef H323_H248
-   switch (response) {
-     case H323GatekeeperRequest::Confirm :
-       if (oldCall->AddCallCreditServiceControl(info.acf.m_serviceControl))
-         info.acf.IncludeOptionalField(H225_AdmissionConfirm::e_serviceControl);
-       break;
-
-     case H323GatekeeperRequest::Reject :
-       if (oldCall != NULL && oldCall->AddCallCreditServiceControl(info.arj.m_serviceControl))
-         info.arj.IncludeOptionalField(H225_AdmissionReject::e_serviceControl);
-       break;
-
-     default :
-       break;
-   }
- #endif
-
-   return response;
- }
-*/
- H323GatekeeperRequest::Response GatekeeperServer::OnRegistrationInfo(H323GatekeeperRRQ & info)
- {
-     if (info.rrq.m_keepAlive) {
-       if (info.endpoint != NULL)
-       {
-           std::cout<<"return info.endpoint->OnRegistration(info)"<<std::endl;
-         return info.endpoint->OnRegistration(info);
-       }
-
-       info.SetRejectReason(H225_RegistrationRejectReason::e_fullRegistrationRequired);
-       PTRACE(2, "RAS\tRRQ keep alive rejected, not registered");
-       std::cout<<"Reject"<<std::endl;
-       return H323GatekeeperRequest::Reject;
-     }
- }

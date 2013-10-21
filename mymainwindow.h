@@ -23,8 +23,7 @@ private:
     void ClearLogs();
     Ui::MyMainWindow *ui;
     XMLReader xml;
-    std::queue<Command*>* commands;
-    //QFile scenario;
+    std::queue<Command*>* commands;  
     QString *nameOfScenario;
     std::string name;
 private slots:

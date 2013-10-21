@@ -9,9 +9,9 @@
 class GRJCommand : public Command
 {
 public:
-    GRJCommand(int state);// : Command(state){}
-    ~GRJCommand();//{}
-    H323GatekeeperRequest::Response execute(H323GatekeeperListener *listener, /*H323GatekeeperGRQ &info);//*/H323GatekeeperRequest *grqInfo);
+    GRJCommand(int state);
+    ~GRJCommand();
+    H323GatekeeperRequest::Response execute(H323GatekeeperListener *listener, H323GatekeeperRequest *grqInfo);
     QString GetName(){return QString("  -->  GRJ");}
 };
 

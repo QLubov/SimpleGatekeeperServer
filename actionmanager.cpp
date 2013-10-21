@@ -1,9 +1,8 @@
 #include "actionmanager.h"
 
-ActionManager *ActionManager::instance = 0;
-
 ActionManager::ActionManager()
 {
+    success = true;
 }
 
 ActionManager::~ActionManager()
@@ -11,21 +10,15 @@ ActionManager::~ActionManager()
 }
 
 void ActionManager::ParseXML(QFile * file)
-{
-    //LogWindow& log = LogWindow::Instance();
-    //log.show();
-    //log.update(QString("start parsing"));
+{    
     XMLReader xml;
-    commands = xml.ReadFile(file);
-    //count = commands->size();
-    //log.update(QString("end parsing"));
+    commands = xml.ReadFile(file);    
 }
 
-ActionManager& ActionManager::Instance()
+/*static*/  ActionManager& ActionManager::Instance()
 {
-    if(!instance)
-        instance = new ActionManager();
-    return *instance;
+    static ActionManager instance;
+    return instance;
 }
 
 PBoolean ActionManager::CheckState(int state)
@@ -38,16 +31,13 @@ PBoolean ActionManager::CheckState(int state)
     return false;
 }
 
-H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperListener *listener,/* H323GatekeeperGRQ &info)//*/H323GatekeeperRequest  *info)
+H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperListener *listener,H323GatekeeperRequest  *info)
 {
     Command *c = commands->front();
     commands->pop();
 
-    //LogWindow& log = LogWindow::Instance();
-    //log.show();
-    //log.update(QString("hohoi"));
     LogManager &log = LogManager::Instance();
-    log.PushLog(/*QString("execute command " + */c->GetName()/*)*/);
+    log.PushLog(c->GetName());
     return c->execute(listener, info);
 }
 int ActionManager::GetCountOfCommand()
@@ -57,7 +47,9 @@ int ActionManager::GetCountOfCommand()
 
 void ActionManager::deleteScenario()
 {
-    for(int i = 0; i < commands->size(); i++)
+    success = false;
+    int size = commands->size();
+    for(int i = 0; i < size; i++)
         commands->pop();
 }
 

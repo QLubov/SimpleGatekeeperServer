@@ -4,8 +4,7 @@
 MyMainWindow::MyMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MyMainWindow)
-{
-    //nameOfScenario = "";
+{    
     ui->setupUi(this);
     ui->pushButton_2->setEnabled(false);
     ui->pushButton_3->setEnabled(false);
@@ -20,8 +19,7 @@ MyMainWindow::~MyMainWindow()
 
 void MyMainWindow::startScenario()
 {
-    ClearLogs();
-    //QString nameOfScenario;
+    ClearLogs();    
     if(!nameOfScenario->isEmpty())
     {
         ui->pushButton_3->setEnabled(true);
@@ -32,10 +30,6 @@ void MyMainWindow::startScenario()
         connect(thread, SIGNAL(finished()), this, SLOT(stopScenario()));
         connect(thread, SIGNAL(update(QString)), this, SLOT(updateLogs(QString)));
         connect(this, SIGNAL(exit()), thread, SLOT(end()));
-        //connect(this, SIGNAL(exit()), thread, SLOT(deleteLater()));
-        //KillerThread &killer = KillerThread::Instance();
-        //connect(&killer, SIGNAL(exit()), this, SLOT(stopScenario()));
-        //thread->start();
         thread->StartThread(file);
     }
 
@@ -44,11 +38,6 @@ void MyMainWindow::stopScenario()
 {
     emit exit();
     ui->pushButton_4->setEnabled(true);
-
-    //LogWindow& log = LogWindow::Instance(this);
-    //ClearLogs();
-    //thread->quit();
-    //delete thread;
 }
 void MyMainWindow::updateLogs(QString Message)
 {
@@ -61,12 +50,9 @@ void MyMainWindow::ClearLogs()
 void MyMainWindow::openFile()
 {
     nameOfScenario = new QString (QFileDialog::getOpenFileName(this, "Choose file", "d:/", "XML-files (*.xml)"));
-    ui->pushButton_2->setEnabled(true);
-    //ui->pushButton_3->setEnabled(false);
+    ui->pushButton_2->setEnabled(true);    
     ui->pushButton_4->setEnabled(true);
-    ui->pushButton_5->setEnabled(true);
-    //std::cout<<nameOfScenario->toStdString()<<std::endl;
-    //QFile *scenario = new QFile(*nameOfScenario);
+    ui->pushButton_5->setEnabled(true);    
 }
 void MyMainWindow::editFile()
 {
@@ -82,6 +68,5 @@ void MyMainWindow::saveLogs()
     logFile->open(QIODevice::Append | QIODevice::Text);
     QTextStream out(logFile);
     out<<ui->textBrowser->toPlainText();
-    logFile->close();
-    //out<<"\n";
+    logFile->close();    
 }

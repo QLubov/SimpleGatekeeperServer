@@ -14,6 +14,7 @@ H323GatekeeperRequest::Response GRQCommand::execute(H323GatekeeperListener *list
         std::cout<<" Err in GRQCommand (scenario)!"<<std::endl;
         LogManager &log = LogManager::Instance();
         log.PushLog(QString("Scenario is invalid"));
+        mng.deleteScenario();
         return H323GatekeeperRequest::Reject;        
     }   
 }

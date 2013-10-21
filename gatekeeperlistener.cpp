@@ -1,6 +1,6 @@
 #include "gatekeeperlistener.h"
 
-GatekeeperListener::GatekeeperListener(H323EndPoint &endpoint, H323GatekeeperServer &server, const PString &gatekeeperIdentifier/*, SimpleGatekeeper *gatekeeper*/, H323Transport *transport)
+GatekeeperListener::GatekeeperListener(H323EndPoint &endpoint, H323GatekeeperServer &server, const PString &gatekeeperIdentifier, H323Transport *transport)
 : H323GatekeeperListener(endpoint, server, gatekeeperIdentifier, transport)
 {    
     flag = false;
@@ -16,7 +16,7 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
     log.PushLog(QString("Establish connection with " + info.GetReplyAddress().GetHostName()));
 
     ActionManager &mng = ActionManager::Instance();
-    if(mng.CheckState(GRQ))// || mng.CheckState(delay))
+    if(mng.CheckState(GRQ))
         return mng.ExecuteCommand(this, &info);
     else
     {
@@ -24,8 +24,8 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
 
         log.PushLog(QString("Error: waiting " + mng.GetCommandName() + ", but recieving GRQ!"));
 
-        //mng.deleteScenario();//the commands queue should be erased for exiting
-        return H323GatekeeperRequest::Reject;
+        mng.deleteScenario();//the commands queue should be erased for exiting
+        //return H323GatekeeperRequest::Reject;
     }
 
 
@@ -35,11 +35,9 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
  {
     std::cout<<"H323GatekeeperListener::OnRegistration"<<std::endl;    
 
-    static int count = 0;
     ActionManager &mng = ActionManager::Instance();
     if(mng.CheckState(RRQ))
-    {
-        //count++;
+    {        
         flag = true;
         return mng.ExecuteCommand(this, &info);
     }
@@ -50,11 +48,11 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
             std::cout<<"Err in onRegistration!"<<std::endl;
             LogManager &log = LogManager::Instance();
             log.PushLog(QString("Error: waiting " + mng.GetCommandName() + ", but recieving RRQ!"));
+            mng.deleteScenario();
             return H323GatekeeperRequest::Reject;
         }
         else
-        {
-            std::cout<<count<<std::endl;
+        {            
             return OnRegistrationInfo(info);//ping
         }        
     }
@@ -72,6 +70,7 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
         std::cout<<"Err in onUnregistration!"<<std::endl;
         LogManager &log = LogManager::Instance();
         log.PushLog(QString("Error: waiting " + mng.GetCommandName() + ", but recieving URQ!"));
+        mng.deleteScenario();
         return H323GatekeeperRequest::Reject;
     }    
   }

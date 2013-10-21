@@ -1,6 +1,7 @@
 #ifndef XMLREADER_H
 #define XMLREADER_H
 #pragma once
+
 #include <queue>
 #include <iostream>
 #include <QXmlStreamReader>

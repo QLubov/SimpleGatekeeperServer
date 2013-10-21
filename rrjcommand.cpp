@@ -7,7 +7,7 @@ RRJCommand::RRJCommand(int state)
 RRJCommand::~RRJCommand()
 {
 }
-H323GatekeeperRequest::Response RRJCommand::execute(H323GatekeeperListener *listener, /*H323GatekeeperGRQ &info);//*/H323GatekeeperRequest *rrqInfo)//тут будет нужен ррку
+H323GatekeeperRequest::Response RRJCommand::execute(H323GatekeeperListener *listener, H323GatekeeperRequest *rrqInfo)
 {
     return H323GatekeeperRequest::Reject;
 }
