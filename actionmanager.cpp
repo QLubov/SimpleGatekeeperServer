@@ -10,7 +10,8 @@ ActionManager::~ActionManager()
 }
 
 void ActionManager::ParseXML(QFile * file)
-{    
+{
+    success = true;
     XMLReader xml;
     commands = xml.ReadFile(file);    
 }
@@ -23,9 +24,9 @@ void ActionManager::ParseXML(QFile * file)
 
 PBoolean ActionManager::CheckState(int state)
 {
-    if (!commands->empty())
+    if (!commands.empty())
     {
-        Command *c = commands->front();
+        Command *c = commands.front();
         return c->ValidateState(state);
     }
     return false;
@@ -33,8 +34,8 @@ PBoolean ActionManager::CheckState(int state)
 
 H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperListener *listener,H323GatekeeperRequest  *info)
 {
-    Command *c = commands->front();
-    commands->pop();
+    Command *c = commands.front();
+    commands.pop();
 
     LogManager &log = LogManager::Instance();
     log.PushLog(c->GetName());
@@ -42,18 +43,20 @@ H323GatekeeperRequest::Response ActionManager::ExecuteCommand(H323GatekeeperList
 }
 int ActionManager::GetCountOfCommand()
 {
-    return commands->size();
+    return commands.size();
 }
 
 void ActionManager::deleteScenario()
 {
     success = false;
-    int size = commands->size();
+    int size = commands.size();
     for(int i = 0; i < size; i++)
-        commands->pop();
+        commands.pop();
 }
 
 QString ActionManager::GetCommandName()
 {
-    return commands->front()->GetName();
+    if(commands.empty())
+        return QString("");
+    return commands.front()->GetName();
 }

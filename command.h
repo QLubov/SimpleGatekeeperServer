@@ -6,7 +6,7 @@
 #include <ptlib.h>
 #include <h323.h>
 #include <gkserver.h>
-#include <enumOfStates.h>
+#include "enumOfStates.h"
 
 class Command
 {    

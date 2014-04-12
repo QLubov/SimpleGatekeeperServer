@@ -5,7 +5,7 @@
 #include "xmlreader.h"
 #include <ptlib.h>
 #include "logmanager.h"
-#include <enumOfStates.h>
+#include "enumOfStates.h"
 
 class ActionManager
 { 
@@ -24,7 +24,7 @@ private:
     ActionManager (const ActionManager&);
     ActionManager& operator=(const ActionManager&);    
     bool success;
-    std::queue<Command*>* commands;
+    std::queue<Command*> commands;
 };
 
 #endif // ACTIONMANAGER_H

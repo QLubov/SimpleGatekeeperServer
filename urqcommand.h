@@ -9,7 +9,7 @@ public:
     URQCommand(int state);
     ~URQCommand();
     H323GatekeeperRequest::Response execute(H323GatekeeperListener *listener, H323GatekeeperRequest *urqInfo);
-    QString GetName(){return QString("  <--  URQ");}
+     QString GetName(){return QString("  <--  URQ");}
 };
 
 #endif // URQCOMMAND_H

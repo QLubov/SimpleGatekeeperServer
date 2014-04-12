@@ -6,17 +6,18 @@
 #include <iostream>
 #include <QXmlStreamReader>
 #include <QFile>
-#include <command.h>
-#include <commandfactory.h>
+#include "command.h"
+#include "commandfactory.h"
 
 class XMLReader
 {
 public:
     XMLReader(){}
     ~XMLReader(){}
-    std::queue<Command*>* ReadFile(QFile *);
+    std::queue<Command*> ReadFile(QFile *);
 private:
-    void parseAction(QXmlStreamReader&, std::queue<Command*>*);
+    void parseAction(QXmlStreamReader&);
+    std::queue<Command*> ListOfCommand;
 };
 
 #endif // XMLREADER_H

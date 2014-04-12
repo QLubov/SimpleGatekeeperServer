@@ -8,6 +8,7 @@ GatekeeperListener::GatekeeperListener(H323EndPoint &endpoint, H323GatekeeperSer
 
 GatekeeperListener::~GatekeeperListener(void)
 {
+    StopChannel();
 }
 H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperGRQ & info)
 {
@@ -22,7 +23,7 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
     {
         std::cout<<"Err in onDiscovery!"<<std::endl;
 
-        log.PushLog(QString("Error: waiting " + mng.GetCommandName() + ", but recieving GRQ!"));
+        log.PushLog(QString("Error: Received GRQ instead " + mng.GetCommandName()));
 
         mng.deleteScenario();//the commands queue should be erased for exiting
         //return H323GatekeeperRequest::Reject;
@@ -47,9 +48,9 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
         {
             std::cout<<"Err in onRegistration!"<<std::endl;
             LogManager &log = LogManager::Instance();
-            log.PushLog(QString("Error: waiting " + mng.GetCommandName() + ", but recieving RRQ!"));
+            log.PushLog(QString("Error: Received RRQ instead " + mng.GetCommandName()));
             mng.deleteScenario();
-            return H323GatekeeperRequest::Reject;
+            //return H323GatekeeperRequest::Reject;
         }
         else
         {            
@@ -69,9 +70,9 @@ H323GatekeeperRequest::Response GatekeeperListener::OnDiscovery (H323GatekeeperG
     {
         std::cout<<"Err in onUnregistration!"<<std::endl;
         LogManager &log = LogManager::Instance();
-        log.PushLog(QString("Error: waiting " + mng.GetCommandName() + ", but recieving URQ!"));
+        log.PushLog(QString("Error: Received URQ instead " + mng.GetCommandName()));
         mng.deleteScenario();
-        return H323GatekeeperRequest::Reject;
+        //return H323GatekeeperRequest::Reject;
     }    
   }
 

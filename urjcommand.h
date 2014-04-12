@@ -1,7 +1,7 @@
 #ifndef URJCOMMAND_H
 #define URJCOMMAND_H
 
-#include <command.h>
+#include "command.h"
 #include "ptlib.h"
 #include "h323.h"
 #include "gkserver.h"

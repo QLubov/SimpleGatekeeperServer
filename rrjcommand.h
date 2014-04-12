@@ -1,7 +1,7 @@
 #ifndef RRJCOMMAND_H
 #define RRJCOMMAND_H
 
-#include <command.h>
+#include "command.h"
 #include "ptlib.h"
 #include "h323.h"
 #include "gkserver.h"

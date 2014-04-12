@@ -8,7 +8,6 @@ QServerThread::QServerThread(QObject *parent) :
 
 void QServerThread::run()
 {
-
     H323EndPoint ep;
     //server = new GatekeeperServer(ep);
     GatekeeperServer serv(ep);
@@ -20,7 +19,7 @@ void QServerThread::run()
     {
     }
     //delete server;
-    if(mng.IsSuccessed())
+    if(mng.IsSuccessed() && needToClose)
         log.PushLog(QString("Scenario was successfully finished"));
     else
        log.PushLog(QString("server stop"));
