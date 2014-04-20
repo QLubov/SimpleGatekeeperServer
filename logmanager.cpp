@@ -6,7 +6,7 @@ LogManager& LogManager::Instance()
     return instance;
 }
 
-void LogManager::PushLog(QString &log)
+void LogManager::PushLog(const QString &log)
 {
     QTime time = QTime::currentTime();
     QString currentTime = time.toString("hh:mm:ss.zzz");

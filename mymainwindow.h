@@ -18,23 +18,20 @@ class MyMainWindow : public QMainWindow
 public:
     explicit MyMainWindow(QWidget *parent = 0);
     ~MyMainWindow();    
-
-private:
-    void ClearLogs();
-    Ui::MyMainWindow *ui;
-    XMLReader xml;
-    std::queue<Command*>* commands;  
-    QString *nameOfScenario;
-    std::string name;
 private slots:
     void startScenario();
     void stopScenario();
-    void updateLogs(QString);
+    void updateLogs(const QString&);
     void openFile();
     void editFile();
     void saveLogs();
 signals:
-    void exit();
+    void StopServer();
+private:
+    void ClearLogs();
+    Ui::MyMainWindow *ui;
+    QString nameOfScenario;
+    void SetButtonsState(bool editButton, bool saveButton, bool startButton, bool stopButton);
 };
 
 #endif // MYMAINWINDOW_H

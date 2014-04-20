@@ -1,15 +1,18 @@
 #include "qserverthread.h"
 
-QServerThread::QServerThread(QObject *parent) :
-    QThread(parent)
+QServerThread::QServerThread(const QString& scenarioName, QObject *parent) :
+    QThread(parent),
+    needToClose(true)
 {
-    needToClose = true;
+    QFile file(scenarioName);
+    ActionManager &mng = ActionManager::Instance();
+    mng.ParseXML(&file);
+    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
 }
 
 void QServerThread::run()
 {
-    H323EndPoint ep;
-    //server = new GatekeeperServer(ep);
+    H323EndPoint ep;   
     GatekeeperServer serv(ep);
     LogManager &log = LogManager::Instance();
     log.clearLogs();
@@ -18,22 +21,11 @@ void QServerThread::run()
     while(needToClose && mng.GetCountOfCommand())
     {
     }
-    //delete server;
+
     if(mng.IsSuccessed() && needToClose)
         log.PushLog(QString("Scenario was successfully finished"));
     else
-       log.PushLog(QString("server stop"));
-
-    //return;
-}
-void QServerThread::StartThread(QFile *file)
-{
-    LogManager &log = LogManager::Instance();
-    connect(&log, SIGNAL(updateLogs(QString)), this, SIGNAL(update(QString)));
-    log.PushLog(QString("Scenario " + file->fileName() + " opened"));
-    ActionManager &mng = ActionManager::Instance();
-    mng.ParseXML(file);    
-    this->start();
+       log.PushLog(QString("server stop"));    
 }
 void QServerThread::end()
 {    

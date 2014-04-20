@@ -2,6 +2,9 @@
 
 H323GatekeeperRequest::Response GCFCommand::execute(H323GatekeeperListener *listener, H323GatekeeperRequest *grqInfo)
 {
+
+    //H323GatekeeperRequest::Response responve = listener->OnDiscovery();
+
     ActionManager &mng = ActionManager::Instance();
     std::cout<<" GCFCommand"<<std::endl;
     H323GatekeeperGRQ *info = dynamic_cast<H323GatekeeperGRQ*>(grqInfo);
@@ -14,7 +17,7 @@ H323GatekeeperRequest::Response GCFCommand::execute(H323GatekeeperListener *list
     }
 
     if (info->grq.m_protocolIdentifier.GetSize() != 6 || info->grq.m_protocolIdentifier[5] < 2) {
-     info->SetRejectReason(H225_GatekeeperRejectReason::e_invalidRevision);     
+     info->SetRejectReason(H225_GatekeeperRejectReason::e_invalidRevision);
      LogManager &log = LogManager::Instance();
      log.PushLog(QString("Err in GatekeeperGCF: GRQ rejected, version 1 not supported"));
      mng.deleteScenario();

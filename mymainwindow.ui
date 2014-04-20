@@ -117,7 +117,7 @@
      <string notr="true"/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="OpenButton">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -146,7 +146,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="EditButton">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -178,7 +178,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="SaveButton">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -207,7 +207,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="StartButton">
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -236,7 +236,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="StopButton">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -272,7 +272,7 @@
      <x>0</x>
      <y>0</y>
      <width>292</width>
-     <height>18</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -283,7 +283,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>pushButton_4</sender>
+   <sender>StartButton</sender>
    <signal>clicked()</signal>
    <receiver>MyMainWindow</receiver>
    <slot>startScenario()</slot>
@@ -299,7 +299,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_5</sender>
+   <sender>StopButton</sender>
    <signal>clicked()</signal>
    <receiver>MyMainWindow</receiver>
    <slot>stopScenario()</slot>
@@ -315,7 +315,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>OpenButton</sender>
    <signal>clicked()</signal>
    <receiver>MyMainWindow</receiver>
    <slot>openFile()</slot>
@@ -331,7 +331,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>EditButton</sender>
    <signal>clicked()</signal>
    <receiver>MyMainWindow</receiver>
    <slot>editFile()</slot>
@@ -347,7 +347,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>SaveButton</sender>
    <signal>clicked()</signal>
    <receiver>MyMainWindow</receiver>
    <slot>saveLogs()</slot>

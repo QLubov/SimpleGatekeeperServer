@@ -6,12 +6,13 @@
 #include <QTextStream>
 #include <QFile>
 
+#define LOG(message) LogManager::Instance().PushLog(message)
 class LogManager : public QObject
 {
     Q_OBJECT
 public:
     static LogManager& Instance();
-    void PushLog(QString&);
+    void PushLog(const QString&);
     ~LogManager(){}
     void clearLogs();
 private:

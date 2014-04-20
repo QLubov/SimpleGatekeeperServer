@@ -48,12 +48,12 @@ GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
 {
     std::cout<<"Create a gatekeeper!"<<std::endl;    
 
-    this->SetGatekeeperIdentifier("Gatekeeper", 1);
-    this->SetTimeToLive(1200);
+    //this->SetGatekeeperIdentifier("Gatekeeper", 1);
+    //this->SetTimeToLive(1200);
     //this->SetAvailableBandwidth(32);
     //this->SetInfoResponseRate(10);
 
-    endpoint.SetLocalUserName("Luba");
+    //endpoint.SetLocalUserName("Luba");
 
     vector<H323TransportUDP *> transports;
     GetTransportsByReference(&endpoint, transports);

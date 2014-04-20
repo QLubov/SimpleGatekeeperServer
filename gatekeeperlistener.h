@@ -13,8 +13,10 @@ public:
     virtual H323GatekeeperRequest::Response OnDiscovery (H323GatekeeperGRQ & info) ;
     virtual H323GatekeeperRequest::Response OnRegistration(H323GatekeeperRRQ & info);
     H323GatekeeperRequest::Response OnUnregistration(H323GatekeeperURQ & info);
+    virtual bool HandleTransaction(const PASN_Object &rawPDU);
+    void Foo(ActionManager &mng);
 private:
-    bool flag;
+    bool mRegistrationReceived;
     H323GatekeeperRequest::Response OnRegistrationInfo(H323GatekeeperRRQ & info);
 };
 

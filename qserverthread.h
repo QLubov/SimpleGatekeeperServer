@@ -14,9 +14,8 @@ class QServerThread : public QThread
     bool needToClose;
     GatekeeperServer *server;
 public:
-    explicit QServerThread(QObject *parent = 0);
-    void StartThread(QFile*);
-    
+    explicit QServerThread(const QString& scenarioName, QObject *parent = 0);
+
 signals:
     void update(QString);
 public slots:

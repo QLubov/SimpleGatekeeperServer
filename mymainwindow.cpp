@@ -6,10 +6,7 @@ MyMainWindow::MyMainWindow(QWidget *parent) :
     ui(new Ui::MyMainWindow)
 {    
     ui->setupUi(this);
-    ui->pushButton_2->setEnabled(false);
-    ui->pushButton_3->setEnabled(false);
-    ui->pushButton_4->setEnabled(false);
-    ui->pushButton_5->setEnabled(false);
+    SetButtonsState(false, false, false, false);
 }
 
 MyMainWindow::~MyMainWindow()
@@ -20,26 +17,28 @@ MyMainWindow::~MyMainWindow()
 void MyMainWindow::startScenario()
 {
     ClearLogs();    
-    if(!nameOfScenario->isEmpty())
+    if(!nameOfScenario.isEmpty())
     {
-        ui->pushButton_3->setEnabled(true);
-        ui->pushButton_4->setEnabled(false);
-        QFile *file = new QFile(*nameOfScenario);
-        QServerThread *thread = new QServerThread(this);
-        connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+        LogManager &log = LogManager::Instance();
+        SetButtonsState(true, true, false, true);
+
+        QServerThread *thread = new QServerThread(nameOfScenario, this);
+
         connect(thread, SIGNAL(finished()), this, SLOT(stopScenario()));
-        connect(thread, SIGNAL(update(QString)), this, SLOT(updateLogs(QString)));
-        connect(this, SIGNAL(exit()), thread, SLOT(end()));
-        thread->StartThread(file);
+        connect(&log, SIGNAL(updateLogs(QString)), this, SLOT(updateLogs(const QString&)));
+        connect(this, SIGNAL(StopServer()), thread, SLOT(end()));
+        thread->start();
+
+        log.PushLog("Scenario " + nameOfScenario + " opened");
     }
 
 }
 void MyMainWindow::stopScenario()
 {
-    emit exit();
-    ui->pushButton_4->setEnabled(true);
+    emit StopServer();
+    ui->StartButton->setEnabled(true);
 }
-void MyMainWindow::updateLogs(QString Message)
+void MyMainWindow::updateLogs(const QString& Message)
 {
     ui->textBrowser->setText(ui->textBrowser->toPlainText() + Message + "\n");
 }
@@ -47,26 +46,35 @@ void MyMainWindow::ClearLogs()
 {
     ui->textBrowser->clear();
 }
+
+void MyMainWindow::SetButtonsState(bool editButton, bool saveButton, bool startButton, bool stopButton)
+{
+    ui->EditButton->setEnabled(editButton);
+    ui->SaveButton->setEnabled(saveButton);
+    ui->StartButton->setEnabled(startButton);
+    ui->StopButton->setEnabled(stopButton);
+}
 void MyMainWindow::openFile()
 {
-    nameOfScenario = new QString (QFileDialog::getOpenFileName(this, "Choose file", "d:/", "XML-files (*.xml)"));
-    ui->pushButton_2->setEnabled(true);    
-    ui->pushButton_4->setEnabled(true);
-    ui->pushButton_5->setEnabled(true);    
+    nameOfScenario = QFileDialog::getOpenFileName(this, "Choose file", "d:/", "XML-files (*.xml)");
+    SetButtonsState(true, true, true, false);
 }
 void MyMainWindow::editFile()
 {
     QProcess *proc = new QProcess(this);
+    connect(proc, SIGNAL(finished(int)), proc, SLOT(deleteLater()));
     QStringList arg;
-    arg.append(*nameOfScenario);
+    arg.append(nameOfScenario);
     proc->start("write.exe",arg);
 }
 void MyMainWindow::saveLogs()
 {
     QString name = QFileDialog::getOpenFileName(this, "Choose file ", "d:/", "TXT-files (*.txt)");
-    QFile *logFile = new QFile(name);
-    logFile->open(QIODevice::Append | QIODevice::Text);
-    QTextStream out(logFile);
+    if(name.isEmpty())
+        return;
+    QFile logFile(name);
+    logFile.open(QIODevice::Append | QIODevice::Text);
+    QTextStream out(&logFile);
     out<<ui->textBrowser->toPlainText();
-    logFile->close();    
+    logFile.close();
 }
