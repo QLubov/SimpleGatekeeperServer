@@ -1,8 +1,7 @@
 #include "qserverthread.h"
 
 QServerThread::QServerThread(const QString& scenarioName, QObject *parent) :
-    QThread(parent),
-    needToClose(true)
+    QThread(parent)
 {
     QFile file(scenarioName);
     ActionManager &mng = ActionManager::Instance();
@@ -12,22 +11,17 @@ QServerThread::QServerThread(const QString& scenarioName, QObject *parent) :
 
 void QServerThread::run()
 {
-    H323EndPoint ep;   
-    GatekeeperServer serv(ep);
-    LogManager &log = LogManager::Instance();
-    log.clearLogs();
-    log.PushLog(QString("server run!"));
-    ActionManager &mng = ActionManager::Instance();
-    while(needToClose && mng.GetCountOfCommand())
-    {
-    }
+    H323EndPoint ep;
+    mServer = new GatekeeperServer(ep);
+    LogManager::Instance().clearLogs();
 
-    if(mng.IsSuccessed() && needToClose)
-        log.PushLog(QString("Scenario was successfully finished"));
-    else
-       log.PushLog(QString("server stop"));    
+    LOG("server run!");
+
+    while(!mServer->IsFinished());
+    cout<<"delete server"<<endl;
+    delete mServer;
 }
-void QServerThread::end()
+void QServerThread::StopServer()
 {    
-    needToClose = false;
+    mServer->Finish();
 }

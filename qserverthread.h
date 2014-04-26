@@ -11,15 +11,12 @@ class QServerThread : public QThread
 {
     Q_OBJECT
     void run();
-    bool needToClose;
-    GatekeeperServer *server;
+    GatekeeperServer *mServer;
 public:
     explicit QServerThread(const QString& scenarioName, QObject *parent = 0);
 
-signals:
-    void update(QString);
 public slots:
-    void end();
+    void StopServer();
 
 };
 

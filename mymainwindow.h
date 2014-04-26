@@ -25,6 +25,7 @@ private slots:
     void openFile();
     void editFile();
     void saveLogs();
+    void StartButtonEnable();
 signals:
     void StopServer();
 private:

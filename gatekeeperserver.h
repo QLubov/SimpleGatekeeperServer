@@ -1,6 +1,5 @@
 #ifndef GATEKEEPERSERVER_H
 #define GATEKEEPERSERVER_H
-#pragma once
 
 #include "gatekeeperlistener.h"
 
@@ -14,12 +13,16 @@ class GatekeeperServer:
     void GetTransportsByReference(H323EndPoint *, vector<H323TransportUDP *> &);
     void RemoveTransports(vector<H323TransportUDP *> &);
     list<GatekeeperListener*> listeners;
+    bool mFinished;
 public:
     GatekeeperServer(H323EndPoint &endpoint);
     virtual ~GatekeeperServer(void);
 
     virtual H323GatekeeperRequest::Response OnDiscovery (H323GatekeeperGRQ &info);
     virtual H323GatekeeperRequest::Response OnRegistration(H323GatekeeperRRQ & info);
+
+    bool IsFinished();
+    void Finish();
 };
 
 #endif // GATEKEEPERSERVER_H

@@ -1,5 +1,6 @@
 #include "gatekeeperserver.h"
-
+#include "actionmanager.h"
+#include "logmanager.h"
 void GatekeeperServer::Configure()
 {
     mGKPorts.push_back(H225_RAS::DefaultRasMulticastPort);
@@ -44,7 +45,8 @@ void GatekeeperServer::RemoveTransports(vector<H323TransportUDP *> &Transports)
 }
 
 GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint)
-    : H323GatekeeperServer(endpoint)
+    : H323GatekeeperServer(endpoint),
+      mFinished(false)
 {
     std::cout<<"Create a gatekeeper!"<<std::endl;    
 
@@ -262,5 +264,29 @@ H323GatekeeperRequest::Response GatekeeperServer::OnDiscovery(H323GatekeeperGRQ 
    PTRACE(2, "RAS\tRRQ accepted: \"" << *info.endpoint << '"');
    std::cout<<"Confirm"<<std::endl;
    return H323GatekeeperRequest::Confirm;
+ }
+
+ bool GatekeeperServer::IsFinished()
+ {
+     ActionManager &mng = ActionManager::Instance();
+     if(mng.GetCountOfCommand() == 0)
+     {
+         if(mng.IsSuccessed())
+             LOG("Scenario was successfully finished");
+         else
+             LOG("Scenario was successfully failed");
+         return true;
+     }
+     else if(mFinished)
+     {
+         LOG("Server was stopped");
+         return true;
+     }
+     return false;
+ }
+
+ void GatekeeperServer::Finish()
+ {
+     mFinished = true;
  }
 
