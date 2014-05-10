@@ -8,9 +8,3 @@ Command::Command(int state)
 Command::~Command()
 {
 }
-
-bool Command::ValidateState(int state)
-{
-    return mState == state;
-}
-

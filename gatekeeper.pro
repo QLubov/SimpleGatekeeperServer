@@ -13,49 +13,22 @@ TEMPLATE = app
 RESOURCES += run.qrc
 
 SOURCES += main.cpp\
-    xmlreader.cpp \
-    grqcommand.cpp \
-    gcfcommand.cpp \
-    commandfactory.cpp \
-    command.cpp \
-    actionmanager.cpp \
+    xmlreader.cpp \    
     gatekeeperserver.cpp \
     gatekeeperlistener.cpp \
-    endpoint.cpp \
-    grjcommand.cpp \
-    qserverthread.cpp \
-    logmanager.cpp \
-    rrqcommand.cpp \
-    rcfcommand.cpp \
-    rrjcommand.cpp \
-    urqcommand.cpp \
-    ucfcommand.cpp \
-    urjcommand.cpp \
-    mymainwindow.cpp \
-    delaycommand.cpp
+    endpoint.cpp \    
+    logmanager.cpp \    
+    mymainwindow.cpp \   
+    qservermanager.cpp
 
-HEADERS  += \
-    grqcommand.h \
-    gcfcommand.h \
-    commandfactory.h \
-    command.h \
+HEADERS  += \    
     xmlreader.h \
-    actionmanager.h \
     gatekeeperserver.h \
     gatekeeperlistener.h \
-    endpoint.h \
-    grjcommand.h \
-    qserverthread.h \
+    endpoint.h \   
     logmanager.h \
-    rrqcommand.h \
-    rcfcommand.h \
-    rrjcommand.h \
-    enumOfStates.h \
-    urqcommand.h \
-    ucfcommand.h \
-    urjcommand.h \
-    mymainwindow.h \
-    delaycommand.h
+    mymainwindow.h \   
+    qservermanager.h
 
 FORMS    += \
     mymainwindow.ui
@@ -63,6 +36,7 @@ FORMS    += \
 INCLUDEPATH += D:/newh323/ptlib/include
 INCLUDEPATH += D:/newh323/h323plus/include
 
+include(actions.pri)
 
 LIBS += -lD:/newh323/h323plus/lib/h323plusd
 LIBS += -lD:/newh323/ptlib/Lib/ptlibsd

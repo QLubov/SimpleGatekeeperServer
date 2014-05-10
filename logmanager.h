@@ -2,9 +2,8 @@
 #define LOGMANAGER_H
 
 #include <QObject>
-#include <QTime>
-#include <QTextStream>
-#include <QFile>
+#include <QList>
+#include <QString>
 
 #define LOG(message) LogManager::Instance().PushLog(message)
 class LogManager : public QObject

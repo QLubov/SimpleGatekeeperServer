@@ -1,4 +1,7 @@
 #include "logmanager.h"
+#include <QTime>
+#include <QTextStream>
+#include <QFile>
 
 LogManager& LogManager::Instance()
 {    

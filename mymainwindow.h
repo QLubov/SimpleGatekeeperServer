@@ -2,10 +2,8 @@
 #define MYMAINWINDOW_H
 
 #include <QMainWindow>
-#include <QFileDialog>
-#include <QProcess>
-#include <QStringList>
-#include "qserverthread.h"
+
+class QServerManager;
 
 namespace Ui {
 class MyMainWindow;
@@ -20,19 +18,22 @@ public:
     ~MyMainWindow();    
 private slots:
     void startScenario();
-    void stopScenario();
+    void stopScenario(const QString& message = "Server was stopped");
     void updateLogs(const QString&);
     void openFile();
     void editFile();
     void saveLogs();
     void StartButtonEnable();
+
 signals:
     void StopServer();
 private:
-    void ClearLogs();
+    void ClearLogTextBrowser();
     Ui::MyMainWindow *ui;
     QString nameOfScenario;
     void SetButtonsState(bool editButton, bool saveButton, bool startButton, bool stopButton);
+    //TODO: investagate why object cann't be created as value type
+    QServerManager *mServerManager;
 };
 
 #endif // MYMAINWINDOW_H

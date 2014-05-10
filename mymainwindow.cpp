@@ -1,49 +1,50 @@
 #include "mymainwindow.h"
 #include "ui_mymainwindow.h"
+#include <QFileDialog>
+#include <QProcess>
+#include <QTextStream>
+#include <QFile>
+#include "logmanager.h"
+#include "qservermanager.h"
 
 MyMainWindow::MyMainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MyMainWindow)
+    ui(new Ui::MyMainWindow),
+    mServerManager(new QServerManager())
 {    
     ui->setupUi(this);
     SetButtonsState(false, false, false, false);
 
-    connect(&LogManager::Instance(), SIGNAL(updateLogs(QString)), this, SLOT(updateLogs(const QString&)));
+    connect(&LogManager::Instance(), SIGNAL(updateLogs(const QString&)), this, SLOT(updateLogs(const QString&)));
 }
 
 MyMainWindow::~MyMainWindow()
 {
+    delete mServerManager;
     delete ui;
 }
 
 void MyMainWindow::startScenario()
 {
-    ClearLogs();    
+    ClearLogTextBrowser();
     if(!nameOfScenario.isEmpty())
     {
-
         SetButtonsState(true, true, false, true);
-
-        QServerThread *thread = new QServerThread(nameOfScenario, this);
-
-        connect(thread, SIGNAL(finished()), this, SLOT(StartButtonEnable()));        
-        connect(this, SIGNAL(StopServer()), thread, SLOT(StopServer()));
-        thread->start();
-
-        LOG("Scenario " + nameOfScenario + " opened");
+        mServerManager->InitServer(nameOfScenario);
     }
 
 }
-void MyMainWindow::stopScenario()
+void MyMainWindow::stopScenario(const QString& message)
 {
-    emit StopServer();
+    mServerManager->OnTerminate(message);
+    SetButtonsState(true, true, true, false);
 }
 void MyMainWindow::updateLogs(const QString& Message)
 {
     std::cout<<"update logs::"<<Message.toStdString()<<std::endl;
     ui->textBrowser->setText(ui->textBrowser->toPlainText() + Message + "\n");
 }
-void MyMainWindow::ClearLogs()
+void MyMainWindow::ClearLogTextBrowser()
 {
     ui->textBrowser->clear();
 }
@@ -84,3 +85,4 @@ void MyMainWindow::StartButtonEnable()
 {
     SetButtonsState(true, true, true, false);
 }
+

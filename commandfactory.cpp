@@ -2,7 +2,7 @@
 
 Command* CommandFactory::CreateCommand(std::string &type, int value)
 {
-    Command *command;
+    /*Command *command;
 
     if(type == "delay")// !std::strcmp(type.c_str(), "delay"))
     {
@@ -54,7 +54,7 @@ Command* CommandFactory::CreateCommand(std::string &type, int value)
     {
         command = new URJCommand(URJ);
         return command;
-    }
+    }*/
     return NULL;
 
 
