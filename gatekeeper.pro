@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     endpoint.cpp \    
     logmanager.cpp \    
     mymainwindow.cpp \   
-    qservermanager.cpp
+    qservermanager.cpp \
+    statemachine.cpp
 
 HEADERS  += \    
     xmlreader.h \
@@ -28,7 +29,8 @@ HEADERS  += \
     endpoint.h \   
     logmanager.h \
     mymainwindow.h \   
-    qservermanager.h
+    qservermanager.h \
+    statemachine.h
 
 FORMS    += \
     mymainwindow.ui

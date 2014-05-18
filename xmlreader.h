@@ -1,22 +1,22 @@
 #ifndef XMLREADER_H
 #define XMLREADER_H
 
-#include <queue>
 #include <iostream>
-#include <QXmlStreamReader>
+#include <QtXml/QDomDocument>
 #include <QFile>
-#include "command.h"
-#include "commandfactory.h"
+#include "Action.h"
+#include "statemachine.h"
+
 
 class XMLReader
 {
 public:
     XMLReader(){}
     ~XMLReader(){}
-    std::queue<Command*> ReadFile(QFile *);
+    QMap< Node, Transition> ReadFile(QFile *);
 private:
-    void parseAction(QXmlStreamReader&);
-    std::queue<Command*> ListOfCommand;
+    QVector<Action*> ParseActions(QDomElement& actions);
+    void ParseNode(QDomElement& node, QMap< Node, Transition >& table, State& previousState );
 };
 
 #endif // XMLREADER_H

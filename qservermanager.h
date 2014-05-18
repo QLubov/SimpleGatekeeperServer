@@ -2,7 +2,9 @@
 #define QSERVERMANAGER_H
 
 #include <QObject>
+#include <QVector>
 #include "gatekeeperserver.h"
+#include "statemachine.h"
 
 class QServerManager : public QObject
 {

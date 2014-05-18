@@ -2,9 +2,11 @@
 # operate objects
 # -----------------------------------------------------------
 # Header files
-HEADERS += command.h \
-    commandfactory.h
+HEADERS += \
+    action.h \
+    actionfactory.h
 
 # Source files
-SOURCES += command.cpp \
-    commandfactory.cpp
+SOURCES += \
+    action.cpp \
+    actionfactory.cpp

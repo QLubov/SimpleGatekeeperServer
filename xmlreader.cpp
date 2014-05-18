@@ -1,64 +1,119 @@
 #include "xmlreader.h"
-
+#include "actionfactory.h"
+#include <QVector>
+#include <stdio.h>
 using namespace std;
 
-queue<Command*> XMLReader::ReadFile(QFile *xmlFile)
+
+void PrintTable( QMap< Node, Transition >& table )
 {
-    //queue<Command*> *ListOfCommand = new queue<Command*>;
+    QMap<Node,Transition>::iterator it;
+    cout << "PRINT TABLE:" << endl;
+    for(it = table.begin(); it != table.end(); ++it)
+    {
+        Node node = it.key();
+        Transition trans = it.value();
+
+        cout << "Node: " << node.first.GetName().toStdString() << "\t" << "Trigger: " << node.second << "\t ID: " << node.first.mState << endl;
+        cout << "Tran: " << trans.first.GetName().toStdString() << "\t";
+        for(size_t i = 0; i < trans.second.size(); ++i)
+        {
+            cout << trans.second[i]->GetName().toStdString() << " ";
+        }
+        cout << endl;
+    }
+}
+
+Trigger StringToTrigger(const QString &trigger)
+{
+    if (trigger == "GRQ")
+        return tGRQ;
+    if (trigger == "RRQ")
+        return tRRQ;
+    if (trigger == "URQ")
+        return tURQ;
+    if (trigger == "ARQ")
+        return tARQ;
+    if (trigger == "BRQ")
+        return tBRQ;
+    if (trigger == "LRQ")
+        return tLRQ;
+
+    return tINVALID;
+}
+
+QMap< Node, Transition> XMLReader::ReadFile(QFile *xmlFile)
+{
+    QMap< Node, Transition > StateTable;
+
+    QDomDocument doc;
     if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
         cout<<"Cann't open XML-file"<<endl;
-        return ListOfCommand;
+        return StateTable;
     }
-    QXmlStreamReader xml(xmlFile);
 
-    while (!xml.atEnd() && !xml.hasError())
+    QString errorStr;
+    int errorLine;
+    int errorColumn;
+
+    if (!doc.setContent(xmlFile, true, &errorStr, &errorLine, &errorColumn))
     {
-        QXmlStreamReader::TokenType token = xml.readNext();
-        if (token == QXmlStreamReader::StartDocument)
-            continue;
-        if (token == QXmlStreamReader::StartElement)
-        {
-            if (xml.name() == "scenario")
-                continue;
-            if (xml.name() == "action" || xml.name() == "delay")
-                parseAction(xml);
-        }
+        cout << "Parse error: xml is incorrect"<<endl;
     }
-    xml.clear();
+    QDomElement scenario = doc.documentElement();
+    State previousState = State::INIT_STATE;
+    for( QDomElement elem = scenario.firstChildElement("node"); !elem.isNull(); elem = elem.nextSiblingElement("node") )
+    {
+        ParseNode(elem, StateTable, previousState);
+    }
+    PrintTable(StateTable);
     xmlFile->close();
-    return ListOfCommand;
+    return StateTable;
 }
 
-void XMLReader::parseAction(QXmlStreamReader& xml)
+State GetPreviousState(QDomElement& node)
 {
-    CommandFactory cmdFactory;
+    QString name = node.previousSiblingElement("node").attribute("name");
+    if(name.isEmpty())
+        return State::INIT_STATE;
+    return State(name);
+}
 
-    if(xml.name() == "delay")
+void XMLReader::ParseNode(QDomElement& node, QMap< Node, Transition >& table, State& state )
+{
+    QString name = node.attribute("name");
+
+    //State state = GetPreviousState(node);
+    State newState(name);
+
+    Trigger trigger = StringToTrigger(name);
+    QVector<Action*> actions = ParseActions(node.firstChildElement("actions"));
+
+    table.insert(Node(state ,trigger), Transition(newState, actions));
+    state = newState;
+}
+
+
+QVector<Action *> XMLReader::ParseActions(QDomElement& actions)
+{
+    QVector<Action*> actionArray;
+
+    QDomNodeList actionNodes = actions.childNodes();
+    for ( int i = 0; i < actionNodes.count(); ++i )
     {
-        xml.readNext();
-        ListOfCommand.push(cmdFactory.CreateCommand(std::string("delay"),xml.text().toString().toInt()));
-        std::cout<<std::string("delay")<<endl;
-        std::cout<<xml.text().toString().toInt()<<endl;
-    }
-    else
-    {
-        if (xml.tokenType() != QXmlStreamReader::StartElement && xml.name() == "action")
-                return ;
-        xml.readNext();
-        while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "action"))
+        QString actionName = actionNodes.item(i).nodeName();
+        Action* action = ActionFactory::CreateAction(actionName);
+        action->OnLoad(actionNodes.item(i));
+        if(!action)
         {
-            if(xml.tokenType() == QXmlStreamReader::StartElement)
-            {
-                if(xml.name() == "type")
-                {
-                    xml.readNext();
-                    ListOfCommand.push(cmdFactory.CreateCommand(xml.text().toString().toStdString()));
-
-                }
-            }
-            xml.readNext();
+            cout << "Action with name" << actionName.toStdString() << " not found" << endl;
+            for(size_t i = 0; i < actionArray.size(); ++i)
+                delete actionArray[i];
+            return QVector<Action*>();
         }
-    }    
+        actionArray.push_back(action);
+    }
+    return actionArray;
 }
 
