@@ -13,10 +13,10 @@ class XMLReader
 public:
     XMLReader(){}
     ~XMLReader(){}
-    QMap< Node, Transition> ReadFile(QFile *);
+    StateMachine ReadFile(QFile *);
 private:
     QVector<Action*> ParseActions(QDomElement& actions);
-    void ParseNode(QDomElement& node, QMap< Node, Transition >& table, State& previousState );
+    void ParseNode(QDomElement& node, StateMachine& table, State& previousState );
 };
 
 #endif // XMLREADER_H

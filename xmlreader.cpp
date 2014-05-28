@@ -42,15 +42,15 @@ Trigger StringToTrigger(const QString &trigger)
     return tINVALID;
 }
 
-QMap< Node, Transition> XMLReader::ReadFile(QFile *xmlFile)
+StateMachine XMLReader::ReadFile(QFile *xmlFile)
 {
-    QMap< Node, Transition > StateTable;
+    StateMachine stateMachine;
 
     QDomDocument doc;
     if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
         cout<<"Cann't open XML-file"<<endl;
-        return StateTable;
+        return stateMachine;
     }
 
     QString errorStr;
@@ -65,26 +65,17 @@ QMap< Node, Transition> XMLReader::ReadFile(QFile *xmlFile)
     State previousState = State::INIT_STATE;
     for( QDomElement elem = scenario.firstChildElement("node"); !elem.isNull(); elem = elem.nextSiblingElement("node") )
     {
-        ParseNode(elem, StateTable, previousState);
+        ParseNode(elem, stateMachine, previousState);
     }
-    PrintTable(StateTable);
+    stateMachine.AddLastAction();
     xmlFile->close();
-    return StateTable;
+    return stateMachine;
 }
 
-State GetPreviousState(QDomElement& node)
-{
-    QString name = node.previousSiblingElement("node").attribute("name");
-    if(name.isEmpty())
-        return State::INIT_STATE;
-    return State(name);
-}
-
-void XMLReader::ParseNode(QDomElement& node, QMap< Node, Transition >& table, State& state )
+void XMLReader::ParseNode(QDomElement& node, StateMachine& table, State& state )
 {
     QString name = node.attribute("name");
 
-    //State state = GetPreviousState(node);
     State newState(name);
 
     Trigger trigger = StringToTrigger(name);
@@ -93,7 +84,6 @@ void XMLReader::ParseNode(QDomElement& node, QMap< Node, Transition >& table, St
     table.insert(Node(state ,trigger), Transition(newState, actions));
     state = newState;
 }
-
 
 QVector<Action *> XMLReader::ParseActions(QDomElement& actions)
 {

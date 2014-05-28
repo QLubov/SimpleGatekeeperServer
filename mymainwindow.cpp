@@ -16,6 +16,7 @@ MyMainWindow::MyMainWindow(QWidget *parent) :
     SetButtonsState(false, false, false, false);
 
     connect(&LogManager::Instance(), SIGNAL(updateLogs(const QString&)), this, SLOT(updateLogs(const QString&)));
+    connect(mServerManager, SIGNAL(Finished(bool)), this, SLOT(ServerFinished(bool)));
 }
 
 MyMainWindow::~MyMainWindow()
@@ -34,10 +35,11 @@ void MyMainWindow::startScenario()
     }
 
 }
-void MyMainWindow::stopScenario(const QString& message)
+void MyMainWindow::stopScenario()
 {
-    mServerManager->OnTerminate(message);
-    SetButtonsState(true, true, true, false);
+    LOG("Server was stopped");
+    mServerManager->OnTerminate(false);
+    ServerFinished(false);
 }
 void MyMainWindow::updateLogs(const QString& Message)
 {
@@ -82,6 +84,11 @@ void MyMainWindow::saveLogs()
 }
 
 void MyMainWindow::StartButtonEnable()
+{
+    SetButtonsState(true, true, true, false);
+}
+
+void MyMainWindow::ServerFinished(bool success)
 {
     SetButtonsState(true, true, true, false);
 }

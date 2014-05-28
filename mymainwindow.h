@@ -18,12 +18,13 @@ public:
     ~MyMainWindow();    
 private slots:
     void startScenario();
-    void stopScenario(const QString& message = "Server was stopped");
+    void stopScenario();
     void updateLogs(const QString&);
     void openFile();
     void editFile();
     void saveLogs();
     void StartButtonEnable();
+    void ServerFinished(bool success);
 
 signals:
     void StopServer();

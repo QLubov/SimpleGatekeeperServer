@@ -47,7 +47,8 @@ Trigger GatekeeperListener::GetTrigger(unsigned int pduTag)
 }
 
 GatekeeperListener::GatekeeperListener(H323EndPoint &endpoint, H323GatekeeperServer &server, const PString &gatekeeperIdentifier, H323Transport *transport, StateMachine& machine)
-: H323GatekeeperListener(endpoint, server, gatekeeperIdentifier, transport),
+: QObject(0),
+  H323GatekeeperListener(endpoint, server, gatekeeperIdentifier, transport),
   mStateMachine(machine)
 {
 }
@@ -56,8 +57,6 @@ GatekeeperListener::~GatekeeperListener(void)
 {
     StopChannel();
 }
-
-
 
 PBoolean GatekeeperListener::HandleTransaction(const PASN_Object &rawPDU)
 {
@@ -68,6 +67,12 @@ PBoolean GatekeeperListener::HandleTransaction(const PASN_Object &rawPDU)
     if (!mStateMachine.DoTransition(trigger, this, pdu))
     {
         LOG("Server successefully failed " + TriggerToString(trigger) + " received");
+        EmitFinish(false);
     }
     return true;
+}
+
+void GatekeeperListener::EmitFinish(bool success)
+{
+    emit Finished(success);
 }

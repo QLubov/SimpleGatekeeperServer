@@ -68,4 +68,14 @@ public:
     virtual QString GetName();
 };
 
+class EndAction : public Action
+{
+public:
+    EndAction(){}
+    virtual ~EndAction(){}
+    virtual bool OnLoad(QDomNode& node);
+    virtual void execute(GatekeeperListener* listener, const H323RasPDU& pdu);
+    virtual QString GetName();
+};
+
 #endif // ACTION_H

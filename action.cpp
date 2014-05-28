@@ -99,3 +99,19 @@ QString Delay::GetName()
 {
     return "Delay " + QString::number(mMSec) + " msec";
 }
+
+
+bool EndAction::OnLoad(QDomNode &node)
+{
+    return true;
+}
+
+void EndAction::execute(GatekeeperListener *listener, const H323RasPDU &pdu)
+{
+    listener->EmitFinish(true);
+}
+
+QString EndAction::GetName()
+{
+    return "";
+}

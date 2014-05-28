@@ -12,11 +12,14 @@ class QServerManager : public QObject
 
     GatekeeperServer *mServer;
     H323EndPoint *mEndPoint;
+    void ConnectObjects(GatekeeperListener* listener);
 public:
     explicit QServerManager(QObject *parent = 0);
     void InitServer(const QString& scenarioName);
 public slots:
-    void OnTerminate(const QString &);
+    void OnTerminate(bool success);
+signals:
+    void Finished(bool success);
 };
 
 #endif // QSERVERMANAGER_H

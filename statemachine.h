@@ -1,6 +1,7 @@
 #ifndef STATEMACHINE_H
 #define STATEMACHINE_H
 #include <QMap>
+#include <QVector>
 #include <QPair>
 #include <QString>
 #include "action.h"
@@ -47,10 +48,13 @@ typedef QPair< State, Trigger > Node;
 class StateMachine
 {
     State mCurrentState;
+    QMap<Node, Transition>::iterator mLastAddedElement;
+    QMap<Node, Transition> mStateTable;
 public:
-    QMap< Node, Transition > mStateMap;
-    StateMachine(QMap< Node, Transition >& stateMap);
+    StateMachine();
     bool DoTransition(Trigger trigger, GatekeeperListener* listener, const H323RasPDU& pdu);
+    void insert( const Node& key, const Transition & value );
+    void AddLastAction();
 };
 
 #endif // STATEMACHINE_H

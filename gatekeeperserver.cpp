@@ -7,14 +7,16 @@
 GatekeeperServer::GatekeeperServer(H323EndPoint &endpoint, StateMachine& machine)
     : H323GatekeeperServer(endpoint)
 {    
-    LOG("nya!");
     PIPSocket::Address addr("192.168.0.23");
-    H323TransportUDP *trans = new H323TransportUDP(endpoint, addr, H225_RAS::DefaultRasUdpPort);
-    H323GatekeeperListener *listener = new GatekeeperListener(endpoint, *this, "Luba", trans, machine);
-    AddListener(listener);
+    mTransport = new H323TransportUDP(endpoint, addr, H225_RAS::DefaultRasUdpPort);
+    mListener = new GatekeeperListener(endpoint, *this, "Luba", mTransport, machine);
+    AddListener(mListener);
 }
 
 
 GatekeeperServer::~GatekeeperServer(void)
 {
+   // RemoveListener(mListener);
+    //delete mListener;
+    //delete mTransport;
 }

@@ -4,27 +4,35 @@
 
 const State State::INIT_STATE;
 
-StateMachine::StateMachine(QMap< Node, Transition >& stateMap)
-    : mStateMap(stateMap),
-      mCurrentState( State::INIT_STATE )
+StateMachine::StateMachine()
+    : mCurrentState(State::INIT_STATE)
 {
-
 }
 
 bool StateMachine::DoTransition(Trigger trigger, GatekeeperListener* listener, const H323RasPDU& pdu)
 {
-    Node node(mCurrentState,trigger);
+    Node node(mCurrentState, trigger);
 
-    if (mStateMap.contains(node))
+    if (mStateTable.contains(node))
     {
-        mCurrentState = mStateMap[node].first;
-        QVector <Action*> actions = mStateMap[node].second;
+        mCurrentState = mStateTable[node].first;
+        QVector <Action*> actions = mStateTable[node].second;
         for(size_t i = 0; i < actions.size(); ++i)
             actions[i]->execute(listener, pdu);
         return true;
     }
     std::cout << " DoTransition::false ><\" " << std::endl;
     return false;
+}
+
+void StateMachine::AddLastAction()
+{
+    mLastAddedElement->second.push_back(new EndAction());
+}
+
+void StateMachine::insert(const Node &key, const Transition &value)
+{
+    mLastAddedElement = mStateTable.insert(key, value);
 }
 
 
