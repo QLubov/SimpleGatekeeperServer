@@ -45,6 +45,9 @@ QString TriggerToString(Trigger trigger)
     case tRRQ:
         return "tRRQ";
         break;
+    case tARQ:
+        return "tARQ";
+        break;
     case tURQ:
         return "tURQ";
         break;

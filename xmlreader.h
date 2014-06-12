@@ -10,13 +10,13 @@
 
 class XMLReader
 {
+    QDomDocument doc;
+    bool mIsValid;
 public:
-    XMLReader(){}
+    XMLReader(const QString& scenarioName);
     ~XMLReader(){}
-    StateMachine ReadFile(QFile *);
-private:
-    QVector<Action*> ParseActions(QDomElement& actions);
-    void ParseNode(QDomElement& node, StateMachine& table, State& previousState );
+    LoadedObject* Parse(const QString& objectName);
+    bool IsValid() const {return mIsValid;}
 };
 
 #endif // XMLREADER_H

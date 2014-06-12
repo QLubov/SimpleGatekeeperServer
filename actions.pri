@@ -4,9 +4,9 @@
 # Header files
 HEADERS += \
     action.h \
-    actionfactory.h
+    objectfactory.h
 
 # Source files
 SOURCES += \
     action.cpp \
-    actionfactory.cpp
+    objectfactory.cpp

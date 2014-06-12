@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     logmanager.cpp \    
     mymainwindow.cpp \   
     qservermanager.cpp \
-    statemachine.cpp
+    statemachine.cpp \
+    options.cpp \
+    scenario.cpp
 
 HEADERS  += \    
     xmlreader.h \
@@ -30,7 +32,10 @@ HEADERS  += \
     logmanager.h \
     mymainwindow.h \   
     qservermanager.h \
-    statemachine.h
+    statemachine.h \
+    options.h \
+    loadedobject.h \
+    scenario.h
 
 FORMS    += \
     mymainwindow.ui

@@ -1,5 +1,7 @@
 #include "xmlreader.h"
-#include "actionfactory.h"
+#include "logmanager.h"
+#include "objectfactory.h"
+#include "options.h"
 #include <QVector>
 #include <stdio.h>
 using namespace std;
@@ -24,86 +26,56 @@ void PrintTable( QMap< Node, Transition >& table )
     }
 }
 
-Trigger StringToTrigger(const QString &trigger)
+XMLReader::XMLReader(const QString &scenarioName)
+    : mIsValid(true)
 {
-    if (trigger == "GRQ")
-        return tGRQ;
-    if (trigger == "RRQ")
-        return tRRQ;
-    if (trigger == "URQ")
-        return tURQ;
-    if (trigger == "ARQ")
-        return tARQ;
-    if (trigger == "BRQ")
-        return tBRQ;
-    if (trigger == "LRQ")
-        return tLRQ;
-
-    return tINVALID;
-}
-
-StateMachine XMLReader::ReadFile(QFile *xmlFile)
-{
-    StateMachine stateMachine;
-
-    QDomDocument doc;
-    if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
+    QFile xmlFile(scenarioName);
+    if (!xmlFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        cout<<"Cann't open XML-file"<<endl;
-        return stateMachine;
+        LOG("Cann't open XML-file");
+        mIsValid = false;
+        return;
     }
 
     QString errorStr;
     int errorLine;
     int errorColumn;
 
-    if (!doc.setContent(xmlFile, true, &errorStr, &errorLine, &errorColumn))
+    if (!doc.setContent(&xmlFile, true, &errorStr, &errorLine, &errorColumn))
     {
-        cout << "Parse error: xml is incorrect"<<endl;
+        LOG("Parse error: xml is incorrect\nError: " + errorStr + "\nLine: " + QString::number(errorLine) + "\nColumn: " + QString::number(errorColumn));
+        mIsValid = false;
     }
-    QDomElement scenario = doc.documentElement();
-    State previousState = State::INIT_STATE;
-    for( QDomElement elem = scenario.firstChildElement("node"); !elem.isNull(); elem = elem.nextSiblingElement("node") )
-    {
-        ParseNode(elem, stateMachine, previousState);
-    }
-    stateMachine.AddLastAction();
-    xmlFile->close();
-    return stateMachine;
+
+    xmlFile.close();
 }
 
-void XMLReader::ParseNode(QDomElement& node, StateMachine& table, State& state )
-{
-    QString name = node.attribute("name");
-
-    State newState(name);
-
-    Trigger trigger = StringToTrigger(name);
-    QVector<Action*> actions = ParseActions(node.firstChildElement("actions"));
-
-    table.insert(Node(state ,trigger), Transition(newState, actions));
-    state = newState;
-}
-
-QVector<Action *> XMLReader::ParseActions(QDomElement& actions)
-{
-    QVector<Action*> actionArray;
-
-    QDomNodeList actionNodes = actions.childNodes();
-    for ( int i = 0; i < actionNodes.count(); ++i )
+LoadedObject* XMLReader::Parse(const QString& objectName)
+{        
+    QDomElement testCase = doc.firstChildElement("TestCase");
+    if(testCase.isNull())
     {
-        QString actionName = actionNodes.item(i).nodeName();
-        Action* action = ActionFactory::CreateAction(actionName);
-        action->OnLoad(actionNodes.item(i));
-        if(!action)
-        {
-            cout << "Action with name" << actionName.toStdString() << " not found" << endl;
-            for(size_t i = 0; i < actionArray.size(); ++i)
-                delete actionArray[i];
-            return QVector<Action*>();
-        }
-        actionArray.push_back(action);
+        LOG("'TestCase' doesn't exist in xml");
+        return NULL;
     }
-    return actionArray;
+
+    QDomElement objectNode = testCase.firstChildElement(objectName);
+    if(objectNode.isNull())
+    {
+        LOG("Object node " + objectName + " doesn't exist in xml");
+        return NULL;
+    }
+
+    LoadedObject* object = ObjectFactory::CreateObject(objectName);
+    if(object)
+    {
+        if(object->OnLoad(objectNode))
+            return object;
+        LOG("Object " + objectName + " wasn't loaded");
+    }
+    else
+        LOG(objectName + " class doesn't register in factory");
+    delete object;
+    return NULL;
 }
 

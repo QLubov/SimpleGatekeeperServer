@@ -1,6 +1,6 @@
 #include "qservermanager.h"
 #include "gatekeeperlistener.h"
-#include "actionfactory.h"
+#include "objectfactory.h"
 #include "logmanager.h"
 #include "xmlreader.h"
 
@@ -16,13 +16,30 @@ void QServerManager::ConnectObjects(GatekeeperListener *listener)
 QServerManager::QServerManager(QObject *parent) :
     QObject(parent),
     mServer(0),
-    mEndPoint(0)
+    mEndPoint(0),
+    mScenario(0),
+    mOptions(0)
 {
+    REG(Scenario);
+    ObjectFactory::AddClass("Options", new MetaCreator<OptionManager::Options>);
     REG(SendGCF);
     REG(SendRCF);
     REG(SendUCF);
     REG(SendACF);
     REG(Delay);
+}
+
+bool QServerManager::PrepareTestCase(const QString& scenarioName)
+{
+    XMLReader reader(scenarioName);
+    if(!reader.IsValid())
+        return false;
+    mScenario = (Scenario*)reader.Parse("Scenario");
+    mOptions = (OptionManager::Options*)reader.Parse("Options");
+    if(!mScenario || !mOptions)
+        return false;
+    OptionManager::Instance().SetOptionsMap(mOptions->GetMap());
+    return true;
 }
 
 void QServerManager::InitServer(const QString& scenarioName)
@@ -32,15 +49,20 @@ void QServerManager::InitServer(const QString& scenarioName)
         LOG("Server already exists");
         return;
     }
-    XMLReader reader;
-    QFile* scenario = new QFile(scenarioName);
+
+    if(!PrepareTestCase(scenarioName))
+    {
+        //LOG();
+        emit Finished(false);
+        return;
+    }
+
     mEndPoint = new H323EndPoint();
-    mServer = new GatekeeperServer(*mEndPoint, reader.ReadFile(scenario));
+    mServer = new GatekeeperServer(*mEndPoint, mScenario->GetStateMachine());
     ConnectObjects(mServer->GetListener());
     LogManager::Instance().clearLogs();
-    LOG("Scenario " + scenarioName + " opened");
+    LOG("Scenario " + scenarioName + " is opened");
     LOG("server run!");
-    delete scenario;
 }
 
 void QServerManager::OnTerminate(bool success)
@@ -49,4 +71,6 @@ void QServerManager::OnTerminate(bool success)
     delete mEndPoint;
     mServer = 0;
     mEndPoint = 0;
+    delete mScenario;
+    delete mOptions;
 }

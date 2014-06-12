@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<TestCase>
+	<Options>
+	</Options>
+	<Scenario>
+		<Node name = "GRQ">
+		<Actions>
+			<SendGCF></SendGCF>
+		</Actions>
+		</Node>
+		<Node name = "RRQ">
+		<Actions>
+			<Delay>7000</Delay>
+			<SendRCF></SendRCF>
+		</Actions>
+		</Node>
+		<Node name = "GRQ">
+		<Actions>
+		</Actions>
+		</Node>
+		<Node name = "URQ">
+		<Actions>
+			<SendUCF></SendUCF>
+		</Actions>
+		</Node>		
+	</Scenario>
+</TestCase>

@@ -1,18 +1,17 @@
 #ifndef ACTION_H
 #define ACTION_H
 #include <QString.h>
-//#include <QXmlStreamReader>
+#include "loadedobject.h"
 
 class QDomNode;
 class GatekeeperListener;
 class H323RasPDU;
 
-class Action
+class Action : public LoadedObject
 {
 public:
     Action();
-    virtual ~Action();
-    virtual bool OnLoad(QDomNode& node) = 0;
+    virtual ~Action();    
     virtual void execute(GatekeeperListener* listener, const H323RasPDU& pdu) = 0;
     virtual QString GetName() = 0;
 };
