@@ -11,6 +11,7 @@ class Creator
 {
 public:
     virtual LoadedObject* Create() = 0;
+    virtual ~Creator() { }
 };
 
 template <class  T>
@@ -26,6 +27,9 @@ class ObjectFactory
 {
     QMap <QString, Creator*> mDictionary;
     ObjectFactory(){}
+
+    ObjectFactory(const ObjectFactory&);
+    void operator=(const ObjectFactory&);
     static ObjectFactory& Instance();
 public:
     ~ObjectFactory(){}
