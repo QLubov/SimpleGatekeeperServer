@@ -32,7 +32,7 @@ class ObjectFactory
     void operator=(const ObjectFactory&);
     static ObjectFactory& Instance();
 public:
-    ~ObjectFactory(){}
+    ~ObjectFactory();
     static LoadedObject* CreateObject(const QString& className);
     static void AddClass(const QString& className, Creator* creator);
 };

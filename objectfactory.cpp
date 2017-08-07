@@ -1,3 +1,4 @@
+#include <QList>
 #include "objectfactory.h"
 
 ObjectFactory &ObjectFactory::Instance()
@@ -18,4 +19,11 @@ void ObjectFactory::AddClass(const QString &className, Creator *creator)
 {
     ObjectFactory& factory = Instance();
     factory.mDictionary.insert(className, creator);
+}
+
+ObjectFactory::~ObjectFactory()
+{
+    QList<Creator*> creators = mDictionary.values();
+    for (size_t i = 0; i < creators.size(); ++i)
+        delete creators[i];
 }
